@@ -1445,6 +1445,11 @@ pre code {
   display: inline-block;
   margin: 0 5px;
 }
+.beian img {
+  display: inline-block;
+  margin: 0 3px;
+  vertical-align: middle;
+}
 @keyframes icon-animate {
   0%, 100% {
     transform: scale(1);
