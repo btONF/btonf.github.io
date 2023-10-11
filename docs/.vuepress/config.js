@@ -5,13 +5,14 @@ import { backToTopPlugin } from '@vuepress/plugin-back-to-top'
 import { nprogressPlugin } from '@vuepress/plugin-nprogress'
 
 export default ({
+  head: [['link', { rel: 'icon', href: '/images/logo.svg' }]],
   lang: 'zh-CN',
   title: 'doc-ccc2',
   description: '个人知识库',
   theme: defaultTheme({
 	  locales :{
 		'/':{
-			colorMode : 'auto',
+			colorMode : 'dark',
 			colorModeSwitch:true,
 			navbar: [
 				// NavbarItem
@@ -29,24 +30,12 @@ export default ({
 				],
 
 			sidebar: {
-
-				'/reference/': [
-					{
-						text: 'Reference',
-						children: ['/reference/cli.md', '/reference/config.md'],
-					},
-				],
+				
 			},
+			
 			logo: '/images/logo.svg',
-			head: [
-				// 设置 favor.ico，.vuepress/public 下
-				[
-					'link', { rel: 'icon', href: '/images/logo.svg' }
-				]
-			],
 		}
-	  }
-
+	  },
   }),
   plugins: [
     searchPlugin({
