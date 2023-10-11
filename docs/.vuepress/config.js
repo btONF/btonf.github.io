@@ -1,6 +1,8 @@
 import { defineUserConfig } from 'vuepress'
 import { defaultTheme } from 'vuepress'
 import { searchPlugin } from '@vuepress/plugin-search'
+import { backToTopPlugin } from '@vuepress/plugin-back-to-top'
+import { nprogressPlugin } from '@vuepress/plugin-nprogress'
 
 export default ({
   lang: 'zh-CN',
@@ -27,12 +29,7 @@ export default ({
 				],
 
 			sidebar: {
-				'/': [
-					{
-						text: 'Guide',
-						children: ['/README.md', '/1.md'],
-					},
-				],
+
 				'/reference/': [
 					{
 						text: 'Reference',
@@ -40,6 +37,13 @@ export default ({
 					},
 				],
 			},
+			logo: '/images/logo.svg',
+			head: [
+				// 设置 favor.ico，.vuepress/public 下
+				[
+					'link', { rel: 'icon', href: '/images/logo.svg' }
+				]
+			],
 		}
 	  }
 
@@ -48,9 +52,14 @@ export default ({
     searchPlugin({
 		locales: {
 			'/': {
-			  placeholder: '搜索',
+			  placeholder: '站内搜索',
 			},
 		  },
+		  getExtraFields: (page) => page.frontmatter.tags ?? [],
+
+
     }),
+	backToTopPlugin(),
+	nprogressPlugin(),
   ],
 })
