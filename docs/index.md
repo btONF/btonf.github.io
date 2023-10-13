@@ -8,22 +8,21 @@ hero:
   tagline: My great project tagline
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: 个人网站
+      link: https://ccc2.icu
     - theme: alt
       text: API Examples
       link: /api-examples
 
 features:
-  - title: Feature A
+  - title: Android 自定义View
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    link: /api-examples
+    linkText: 跳转
   - title: Feature B
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
   - title: Feature C
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---
 
-
-
-6666
 

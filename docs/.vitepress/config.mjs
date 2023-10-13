@@ -4,8 +4,11 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "CCC2-DOCS",
   description: "个人知识库",
+  lastUpdated:true,
+  head: [['link', { rel: 'icon', href: '/images/logo.svg' }]],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
+     logo: '/images/logo.svg',
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Examples', link: '/markdown-examples' }
@@ -23,6 +26,12 @@ export default defineConfig({
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
-    ]
+    ],
+    search:{
+      provider: 'local'
+    },
+  },
+  markdown: {
+    lineNumbers: true
   }
 })
