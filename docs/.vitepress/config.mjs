@@ -27,7 +27,7 @@ export default defineConfig({
           items: [
             { text: '开源库',
              items:[
-                {text:'LocalSend',link:'./local-send'},
+                {text:'LocalSend',link:'/tools-collect/local-send'},
               ]
             },
           ]
@@ -36,9 +36,11 @@ export default defineConfig({
       '/site-history/':[
         {
           text: '建站记录',
+          collapsed:false,
           items: [
-            { text: 'Vitepress建站', link: './vitepress-site' },
-            { text: 'Vuepress建站', link: './vuepress-site' }
+
+            { text: 'Vitepress', link: '/site-history/vitepress-site' },
+            { text: 'Vuepress', link: '/site-history/vuepress-site' },
           ]
         }
       ],
