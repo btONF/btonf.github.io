@@ -1,7 +1,7 @@
 # Arcgis 地图库
 
 ## 旧版
-旧版不再维护了，旧版文档见 [文档](./arcgis-runtime-sdk-android-guide-10.2.9.pdf)
+旧版不再维护了，旧版文档见 [文档](/pdf/arcgis-runtime-sdk-android-guide-10.2.9.pdf)
 
 ## 新版
 - ArcGIS Runtime API for Android （https://developers.arcgis.com/android/reference/system-requirements/）：
