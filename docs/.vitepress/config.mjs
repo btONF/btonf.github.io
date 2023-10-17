@@ -41,6 +41,7 @@ export default defineConfig({
 
             { text: 'Vitepress', link: '/site-history/vitepress-site' },
             { text: 'Vuepress', link: '/site-history/vuepress-site' },
+            { text: '配置cloudflare', link: '/site-history/cf-githubpages' },
           ]
         }
       ],
