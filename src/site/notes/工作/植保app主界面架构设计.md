@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/工作/植保app主界面架构设计/","noteIcon":"","updated":"2023-11-29T16:34:47.365+08:00"}
+{"dg-publish":true,"permalink":"/工作/植保app主界面架构设计/","noteIcon":"","updated":"2023-11-29T16:40:28.007+08:00"}
 ---
 
 # 预览图
@@ -19,5 +19,14 @@ mindmap
 		FPV
 			FPV1
 			FPV2
-		
+		飞机信息
+		模式切换
+		快捷按钮
+			撤销/反撤销
+			定位
+			清除
+		按钮
+			操作按钮
+			打点模式切换
+			打点样式切换
 ```
