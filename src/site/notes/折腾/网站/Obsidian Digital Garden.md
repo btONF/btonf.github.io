@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/折腾/网站/Obsidian Digital Garden/","noteIcon":"","updated":"2023-11-28T15:48:00.984+08:00"}
+{"dg-publish":true,"permalink":"/折腾/网站/Obsidian Digital Garden/","noteIcon":"","updated":"2023-11-29T15:40:14.006+08:00"}
 ---
 
 # 前言
@@ -7,6 +7,7 @@
 >[!NOTE]+ 写在前面
 > 插件github  https://github.com/oleeskild/obsidian-digital-garden#-obsidian-digital-garden
 > 教程   https://juejin.cn/post/7300762419240009782
+> 文档   https://dg-docs.ole.dev/
 
 理论上github pages一样适用
 
