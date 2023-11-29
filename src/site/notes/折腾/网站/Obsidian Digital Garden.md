@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/折腾/网站/Obsidian Digital Garden/","noteIcon":"","created":"2023-11-28T13:45:39.540+08:00","updated":"2023-11-28T15:48:00.984+08:00"}
+{"dg-publish":true,"permalink":"/折腾/网站/Obsidian Digital Garden/","noteIcon":"","updated":"2023-11-28T15:48:00.984+08:00"}
 ---
 
 # 前言
