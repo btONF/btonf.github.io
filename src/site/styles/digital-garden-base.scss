@@ -705,6 +705,7 @@ body.backlinks-note-icon .backlink[data-note-icon]::before {
     background-repeat: no-repeat;
     background-position: bottom;
     background-image: var(--note-icon-fallback);
+    margin-right:10px;
 }
 
 body.title-note-icon .cm-s-obsidian > header > h1[data-note-icon="1"]::before,
