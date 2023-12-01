@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/工作/植保app主界面架构设计/","noteIcon":"","updated":"2023-12-01T09:12:45.478+08:00"}
+{"dg-publish":true,"permalink":"/工作/植保app主界面架构设计/","noteIcon":"","updated":"2023-12-01T09:22:43.303+08:00"}
 ---
 
 # 预览图
@@ -116,3 +116,10 @@ mindmap
 
 > [!ERROR] 完全依赖
 > 操作交互与作业模式强绑定
+
+
+## 流程图
+
+```mermaid
+
+```
