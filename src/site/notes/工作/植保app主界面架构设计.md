@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/工作/植保app主界面架构设计/","noteIcon":"","updated":"2023-12-04T17:19:40.736+08:00"}
+{"dg-publish":true,"permalink":"/工作/植保app主界面架构设计/","noteIcon":"","updated":"2023-12-04T17:22:32.914+08:00"}
 ---
 
 # 预览图
@@ -8,6 +8,7 @@
 # 思维导图
 
 ```mermaid
+%%{init: {'theme':'dark'}}%%
 mindmap
 	root((主界面))
 		状态栏
@@ -121,6 +122,7 @@ mindmap
 # 流程图
 
 ```mermaid
+%%{init: {'theme':'dark'}}%%
 flowchart TD
 	A[首页] -- 测绘/飞行 --> B[作业页面]
 	B --> C{是否存在未完成任务}
