@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/工作/植保app主界面架构设计/","noteIcon":"","updated":"2023-12-04T17:22:32.914+08:00"}
+{"dg-publish":true,"permalink":"/工作/植保app主界面架构设计/","noteIcon":"","updated":"2023-12-04T17:25:17.750+08:00"}
 ---
 
 # 预览图
@@ -9,6 +9,7 @@
 
 ```mermaid
 %%{init: {'theme':'dark'}}%%
+
 mindmap
 	root((主界面))
 		状态栏
