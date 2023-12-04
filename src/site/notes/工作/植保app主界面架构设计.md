@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/工作/植保app主界面架构设计/","noteIcon":"","updated":"2023-12-01T09:22:43.303+08:00"}
+{"dg-publish":true,"permalink":"/工作/植保app主界面架构设计/","noteIcon":"","updated":"2023-12-04T17:13:14.149+08:00"}
 ---
 
 # 预览图
@@ -121,5 +121,34 @@ mindmap
 ## 流程图
 
 ```mermaid
-
+flowchart TD
+	A[首页] -- 测绘/飞行 --> B[作业页面]
+	B --> C{是否存在未完成任务}
+	C --> C1{是否还原}
+	C1 -- 是 --> D[获取未完成任务Mode]
+	D -- X Mode --> E[State_Work_X_MODE] 
+	C1 -- 否 --> F[State_Normal_Default_Mode]
+	C -- 否 --> F
+	F -- 选择模式 --> F1[State_Normal_X_Mode]
+	F1 -- 切换模式 --> F
+	F -- 测绘/编辑 --> G[State_Mapping_X_Mode]
+	G --完成测绘--> F 
+	F -- 选择地块 --> F2{是否未完成}
+	F2 -- 是 --> E
+	F2 -- 否 --> H[State_Plan_X_Mode]
+	H --不作业 -->F
+	H -- 作业 --> E
+	E --参数检查--> E1[Prepare]
+	E1 --已设置参数 --> E2[Resume]
+	E1 -- 未设置 --> E3[参数设置]
+	E1 --取消 --> F
+	E3 -- 完成 -->E2
+	E2 -- 中断 --> E4[Pause]
+	E4 -- 继续 --> E2
+	E4 -- 完成 --> E5[Complete]
+	E2 --完成-->E5
+	E2 --炸机--> E6[ERROR]
+	E4 --炸机--> E6
+	E6 -->F
+	E5 --> F 
 ```
