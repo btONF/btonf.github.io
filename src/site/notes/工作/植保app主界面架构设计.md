@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/工作/植保app主界面架构设计/","noteIcon":"","updated":"2023-12-04T17:13:14.149+08:00"}
+{"dg-publish":true,"permalink":"/工作/植保app主界面架构设计/","noteIcon":"","updated":"2023-12-04T17:19:40.736+08:00"}
 ---
 
 # 预览图
@@ -118,7 +118,7 @@ mindmap
 > 操作交互与作业模式强绑定
 
 
-## 流程图
+# 流程图
 
 ```mermaid
 flowchart TD
