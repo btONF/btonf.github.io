@@ -74,12 +74,14 @@ ul.task-list {
 
 .sidebar {
     position: fixed;
-    top: 75px;
+    top: 0px;
     right: 0;
     height: 100%;
     min-width: 25px;
     display: flex;
     z-index: 3;
+    padding:15px;
+    background-color: var(--background-secondary);
     max-width: 400px;
 
     .graph {
@@ -143,7 +145,6 @@ ul.task-list {
 }
 
 .toc {
-    padding-right: 5px;
     background-color: var(--background-primary);
     padding: 10px;
     border-radius: 10px;
@@ -162,7 +163,6 @@ ul.task-list {
 
 .toc-container {
     font-size: 1rem;
-    max-height: 220px;
     overflow-y: auto;
     margin-bottom: 10px;
     border-left: 1px solid var(--text-accent);
@@ -249,13 +249,11 @@ ul.task-list {
 .graph {
     .graph-title-container {
         display: flex;
-        justify-content: flex-end;
         width: 100%;
     }
 
     .graph-title {
         width: fit-content;
-        background-color: var(--background-secondary);
         margin: 10px 0 0 0;
         padding: 3px 7px;
         font-size: 1.2rem !important;
@@ -267,7 +265,7 @@ ul.task-list {
 #link-graph {
     background-color: var(--background-secondary);
     margin-bottom: 20px;
-    border-radius: 10px 0 10px 10px;
+    border-radius: 10px;
     width: fit-content;
 }
 
