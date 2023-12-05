@@ -4,9 +4,7 @@
                   {% for imp in dynamics.sidebar.top %}
                         {% include imp %}
                   {% endfor %}
-                  {%if settings.dgShowLocalGraph === true%}
-                        {%include "components/graphScript.njk"%}
-                  {%endif%}
+
 
                   {%if settings.dgShowToc === true%}
                         {%set tocHtml= (content and (content|toc)) %}
@@ -60,6 +58,9 @@
                                     </div>
                               </div>
                         {%endif%}
+                  {%endif%}
+                  {%if settings.dgShowLocalGraph === true%}
+                        {%include "components/graphScript.njk"%}
                   {%endif%}
                   {% for imp in dynamics.sidebar.bottom %}
                         {% include imp %}
