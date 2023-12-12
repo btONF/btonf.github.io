@@ -1,7 +1,9 @@
 ---
-{"dg-publish":true,"permalink":"/开发笔记/Android/资料/Android本地化适配之ICU接口/","noteIcon":"","updated":"2023-12-12T16:55:21.581+08:00"}
+{"dg-publish":true,"permalink":"/开发笔记/Android/资料/Android本地化适配之ICU接口/","noteIcon":"","updated":"2023-12-12T17:00:30.560+08:00"}
 ---
 
+> [!FAQ] 转载
+> 转自 https://juejin.cn/post/7211745375921029181
 #### 背景：
 
 在多语言项目中，我们经常会遇到本地化适配不规范导致的问题。例如 **月份翻译错误**、**数字显示格式不正确** 或者 **数字显示形式与本地习惯不符** 等。为了寻求一种更精准高效的适配方案，我在网上查阅了相关资料。发现Google提供了一个本地化API接口——ICU API。它可以利用ICU和CLDR提供Unicode和其他国际化支持。从而提升软件的本地化质量。
