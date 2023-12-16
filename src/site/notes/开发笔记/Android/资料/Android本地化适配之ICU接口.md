@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/开发笔记/Android/资料/Android本地化适配之ICU接口/","noteIcon":"","updated":"2023-12-12T17:00:30.560+08:00"}
+{"dg-publish":true,"permalink":"/开发笔记/Android/资料/Android本地化适配之ICU接口/","tags":["ICU","多语言"],"noteIcon":"","updated":"2023-12-16T15:35:20.784+08:00"}
 ---
 
 > [!FAQ] 转载
