@@ -1,5 +1,5 @@
-site_name: obsidian-mkdocs template
-
+site_name: Bt's Docs
+site_url: https://doc.ccc2.icu
 theme:
     name: 'material'
     language: zh
@@ -23,7 +23,8 @@ theme:
       toggle:
         icon: material/brightness-7
         name: 切换白天模式
-
+    features:
+        - navigation.instant
 # Extensions
 markdown_extensions:
   - footnotes
