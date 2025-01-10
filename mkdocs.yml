@@ -1,5 +1,6 @@
 site_name: Bt's Docs >_
 site_url: https://doc.ccc2.icu
+site_author: bt
 copyright: <a href="https://beian.miit.gov.cn/" target="blank">皖ICP备20006403号-1</a>
 theme:
     name: 'material'
@@ -36,12 +37,16 @@ theme:
 # Extensions
 markdown_extensions:
   - footnotes
-  # - attr_list
+  - attr_list
   - pymdownx.arithmatex:
       generic: true
-  # - pymdownx.superfences
-  # - pymdownx.details
-  # - pymdownx.magiclink
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.magiclink
+  - pymdownx.highlight: # 代码块高亮
+    anchor_linenums: true
+    linenums: true # 显示行号
+    auto_title: true # 显示编程语言名称
   - pymdownx.tasklist:
       custom_checkbox: true
   - def_list
@@ -62,14 +67,7 @@ markdown_extensions:
 plugins:
   - search
   - roamlinks
-  - blog
-  - rss:
-      match_path: blog/posts/.* 
-      date_from_meta:
-        as_creation: date
-      categories:
-        - categories
-        - tags
+
 
 extra_javascript:
   - javascripts/mathjax.js
@@ -81,7 +79,7 @@ extra_javascript:
 extra:
   social:
     - icon: simple/wechat
-      link: 
+      link: "#"
       name: btonf0302
     - icon: material/email
       link: mailto:<btonf@outlook.com>

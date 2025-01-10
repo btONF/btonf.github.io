@@ -1,11 +1,12 @@
-# Obsidian Notes
+# 关于
 
-Publish your public notes with MkDocs
+## 这是什么？
 
-## Hello World!
+这是一个垃圾站，什么都有
 
-The `index.md` in the `/docs` folder is the homepage you see here.
+## 可以得到什么？
 
-The folders in `/docs` appear as the main sections on the navigation bar.
+你什么也得不到
 
-The notes appear as pages within these sections. For example, [[Note 1]] in `Topic 1`
+
+
