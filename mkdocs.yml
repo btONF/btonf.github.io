@@ -81,9 +81,9 @@ extra_javascript:
 
 extra:
   social:
-    - icon: :material-wechat:
+    - icon: simple/wechat
       link: 
       name: btonf0302
-    - icon: :material-email:
+    - icon: material/email
       link: mailto:<btonf@outlook.com>
       
