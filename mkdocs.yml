@@ -34,17 +34,19 @@ theme:
         - navigation.path
         - navigation.top
         - navigation.footer
+        - "code.copy"
 # Extensions
 markdown_extensions:
   - footnotes
-  - attr_list
+  # - attr_list
   - pymdownx.arithmatex:
       generic: true
   - pymdownx.superfences
   - pymdownx.details
   - pymdownx.magiclink
-  - pymdownx.highlight: # 代码块高亮
+  - pymdownx.highlight:
       anchor_linenums: true
+      linenums: true
   - pymdownx.tasklist:
       custom_checkbox: true
   - def_list
