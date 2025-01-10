@@ -22,7 +22,7 @@ theme:
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: black
-      link: '#007acc'
+      link: '#14C310'
       accent: deep orange
       toggle:
         icon: material/brightness-7
