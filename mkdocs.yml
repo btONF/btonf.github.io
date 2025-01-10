@@ -1,4 +1,4 @@
-site_name: Bt's Docs
+site_name: Bt's Docs >_
 site_url: https://doc.ccc2.icu
 theme:
     name: 'material'
@@ -25,6 +25,12 @@ theme:
         name: 切换白天模式
     features:
         - navigation.instant
+        - navigation.instant.prefetch
+        - navigation.instant.progress
+        - navigation.tracking
+        - navigation.tabs
+        - navigation.path
+        - navigation.top
 # Extensions
 markdown_extensions:
   - footnotes
