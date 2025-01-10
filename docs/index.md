@@ -1,8 +1,8 @@
 ---
-hide: navigation
+hide: navigation,fo
 ---
 
-# 关于
+# - 关于 -
 
 ## 这是什么？
 
@@ -10,7 +10,7 @@ hide: navigation
 
 ## 可以得到什么？
 
-你什么也得不到
+NOTHING
 
 
 
