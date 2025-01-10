@@ -2,13 +2,15 @@ site_name: obsidian-mkdocs template
 
 theme:
     name: 'material'
+    language: zh
+    logo: logo.svg
+    favicon : logo.svg
     palette:
-
     # Light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: purple
-      accent: teal
+      primary: teal
+      accent: green
       toggle:
         icon: material/brightness-4
         name: 切换黑夜模式 
@@ -16,7 +18,7 @@ theme:
     # Dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: purple
+      primary: teal
       accent: light green
       toggle:
         icon: material/brightness-7
