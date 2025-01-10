@@ -12,6 +12,7 @@ theme:
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: white
+      link: '#007acc'
       accent: deep orange
       toggle:
         icon: material/brightness-4
@@ -21,6 +22,7 @@ theme:
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: black
+      link: '#007acc'
       accent: deep orange
       toggle:
         icon: material/brightness-7
