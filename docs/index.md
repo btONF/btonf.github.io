@@ -2,7 +2,7 @@
 hide: navigation,fo
 ---
 
-# - 关于 -
+# ℹ️ 关于
 
 ## 这是什么？
 
