@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "折腾/mkdocs/Mkdocs配置.md",
+                "file": "📝 开发笔记/Android/MQTT 介绍.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Mkdocs配置"
+              "title": "MQTT 介绍"
             }
           }
         ]
@@ -164,6 +164,17 @@
   },
   "active": "2411b85bec244c8a",
   "lastOpenFiles": [
+    "💼 工作/MQTT 详细功能设计.md",
+    "📝 开发笔记/Android/踩坑/全屏代码.md",
+    "📝 开发笔记/Android/资料/Android本地化适配之ICU接口.md",
+    "📝 开发笔记/Android/资料/StateMachine.md",
+    "📝 开发笔记/Python/解析xml，符合条件的小写转大写.md",
+    "📝 开发笔记/Python/签到脚本.md",
+    "💼 工作/经纬度解析.md",
+    "📝 开发笔记/Android/MQTT 介绍.md",
+    "🧠 瞎折腾/mkdocs/官方教程.md",
+    "📝 开发笔记/未命名",
+    "🧠 瞎折腾/mkdocs/Mkdocs配置.md",
     "折腾/mkdocs/files/Pasted image 20250109203602.png",
     "折腾/mkdocs/files",
     "Pasted image 20250109203407.png",
