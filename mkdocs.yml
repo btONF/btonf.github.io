@@ -35,6 +35,8 @@ theme:
         - navigation.top
         - navigation.footer
         - content.code.copy
+        - content.code.select
+        - content.code.annotate
 # Extensions
 markdown_extensions:
   - footnotes
@@ -43,6 +45,7 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.magiclink
   - pymdownx.highlight:
+      linenums: true
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
