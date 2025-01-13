@@ -35,10 +35,14 @@ theme:
         - navigation.top
         - navigation.footer
         - content.code.copy
+        - content.code.select
+        - content.code.annotate
+        - content.tabs.link
 # Extensions
 markdown_extensions:
   - footnotes
   # - attr_list
+  - admonition
   - pymdownx.arithmatex:
       generic: true
   - pymdownx.superfences
@@ -48,6 +52,8 @@ markdown_extensions:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
   - pymdownx.tasklist:
       custom_checkbox: true
   - def_list
