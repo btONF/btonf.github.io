@@ -37,7 +37,6 @@ theme:
         - content.code.copy
         - content.code.select
         - content.code.annotate
-        - content.tabs.link
 # Extensions
 markdown_extensions:
   - footnotes
