@@ -160,7 +160,41 @@ sequenceDiagram
 无人机的 Broker 服务架设在自己内部，且自己作为默认授权的设备"优先"连接
 这里优先的含义是，在 `无人机 Broker` 服务提供给外部连接前，应当确保 `无人机 Broker` 启动完成，并且自己的客户端（数据发布源）已经成功连接。
 
-## 无人机关键信息获取
+### 3.2 内网客户端登录
+
+在经过了对频操作，使得遥控器加入了无人机的内网后，理论上遥控器，或者说用户，有着最高的权限，那么登入无人机的步骤应当更多的考虑"兼容性"，而非"安全性"。
+
+兼容性：不同的无人机型号，不同无人机版本均可使用同一 APP 登录。
+安全性：有着账号校验流程，以保证非可信设备异常接入。
+
+基于此，在通过`UPD广播`广播 Broker 的地址的情况下，可以扩充广播内容，额外携带 `Broker` 的账号，密码，端口信息，APP 在成功解析到广播信息后即可正常登入 Broker。
+
+### 3.3 时序图
+
+```mermaid
+sequenceDiagram
+    participant Drone as 无人机
+    participant Broker as Broker服务
+    participant RemoteControl as 遥控器
+    
+    Drone->>Broker: 开启 Broker 服务
+    Broker-->>Drone: Broker 服务启动成功
+    Drone->>Broker: 登录到 Broker（账号密码）
+    Broker-->>Drone: 登录成功
+    
+    Drone->>Drone: 开始广播 Broker 地址和账号信息（UDP）
+    RemoteControl->>Drone: 解析 UDP 广播信息（获取地址）
+    RemoteControl->>Broker: 登录到无人机的 Broker（账号密码）
+    Broker-->>RemoteControl: 登录成功
+    
+    Drone->>RemoteControl: 开始 MQTT 数据通信
+    RemoteControl->>Drone: 收到数据，开始互动
+
+```
+
+## 4.无人机关键信息获取
+
+
 
 ## 建立云端连接
 
