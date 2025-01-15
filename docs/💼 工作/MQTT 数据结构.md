@@ -12,7 +12,6 @@ Body: {
 	pb: AplProto, // 消息主体就是原本的pb数据体
 }
 ```
-
 === "pb"
 
 ```protobuf

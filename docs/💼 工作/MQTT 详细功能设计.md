@@ -196,10 +196,13 @@ sequenceDiagram
 
 从这里开始就涉及到和无人机的数据通信，基础数据结构参考[[MQTT 数据结构]]里的遥测数据结构。
 
-在这里无法使用通用遥测的方式接收数据，因为`SN`的关键信息未获取，故无人机的`PresetInfo`通过以下固定`Topic`的方式获取
+在这里无法使用通用遥测的 `Tpoic`接收数据，因为`apl_id`的关键信息未获取，故无人机的`PresetInfo`通过以下固定 Topic 的方式获取
 
 ```mqtt
-
+Topic: "PresetInfo" // 使用固定的Topic获取飞机的一些关键信息
+Body: {
+	pb: AplProto, 
+}
 ```
 
 ## 建立云端连接
