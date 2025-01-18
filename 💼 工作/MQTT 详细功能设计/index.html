@@ -1,0 +1,3250 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="bt">
+      
+      
+        <link rel="canonical" href="https://doc.ccc2.icu/%F0%9F%92%BC%20%E5%B7%A5%E4%BD%9C/MQTT%20%E8%AF%A6%E7%BB%86%E5%8A%9F%E8%83%BD%E8%AE%BE%E8%AE%A1/">
+      
+      
+        <link rel="prev" href="../MQTT%20%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+      
+      
+        <link rel="next" href="../%E7%BB%8F%E7%BA%AC%E5%BA%A6%E8%A7%A3%E6%9E%90/">
+      
+      
+      <link rel="icon" href="../../logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
+    
+    
+      
+        <title>MQTT 详细功能设计 - Bt's Docs >_</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="Bt&#39;s Docs &gt;_" class="md-header__button md-logo" aria-label="Bt's Docs >_" data-md-component="logo">
+      
+  <img src="../../logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Bt's Docs >_
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              MQTT 详细功能设计
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="黑夜模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="黑夜模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="白天模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="白天模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  关于
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../MQTT%20%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="md-tabs__link">
+          
+  
+  💼 工作
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../%F0%9F%93%9A%20%E4%B9%A6%E7%B1%8D/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84/" class="md-tabs__link">
+          
+  
+  📚 书籍
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../%F0%9F%93%9D%20%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/Android/MQTT%20%E4%BB%8B%E7%BB%8D/" class="md-tabs__link">
+          
+  
+  📝 开发笔记
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../%F0%9F%94%A7%E5%B7%A5%E5%85%B7/%E6%97%B6%E9%97%B4%E6%88%B3%E5%B7%A5%E5%85%B7/" class="md-tabs__link">
+          
+  
+  🔧工具
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../%F0%9F%A7%A0%20%E7%9E%8E%E6%8A%98%E8%85%BE/mkdocs/Mkdocs%E9%85%8D%E7%BD%AE/" class="md-tabs__link">
+          
+  
+  🧠 瞎折腾
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Bt&#39;s Docs &gt;_" class="md-nav__button md-logo" aria-label="Bt's Docs >_" data-md-component="logo">
+      
+  <img src="../../logo.svg" alt="logo">
+
+    </a>
+    Bt's Docs >_
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    关于
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    💼 工作
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            💼 工作
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MQTT%20%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MQTT 数据结构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    MQTT 详细功能设计
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    MQTT 详细功能设计
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 定义
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 定义">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-mqtt" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 MQTT
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1 MQTT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.1 Broker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.2 Client
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.3 消息 Topic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-mqtt" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.3 MQTT 连接要素
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 对频
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 加密
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.4 权限
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.4 权限">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#141" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.4.1 权限分级
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p0" class="md-nav__link">
+    <span class="md-ellipsis">
+      附：P0 权限激活
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#142-p0" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.4.2 P0 权限激活模式简述
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 本地 Broker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 本地 Broker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 连接信息的发现
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1 连接信息的发现">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#211" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.1 数传模块
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222-udp" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.2 UDP 广播
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-rc" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 RC 设备连接
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-apollo" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 Apollo 连接
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.4 无人机关键信息获取
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 云端 Broker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 云端 Broker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-apollo" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Apollo 连接
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1 Apollo 连接">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#311" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.1 密码加盐
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#312" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.2 动态下发
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 对频连接标识
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 对频连接标识">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.1 对频连接标识的场景
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2.1 对频连接标识的场景">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3211" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.1.1 云端登录鉴权
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3212" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.1.2 无人机重新对频
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322-apollo" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2 Apollo 发布对频标识
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-rc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 RC 设备连接
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 RC 设备连接">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331-rc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.1 RC 连接鉴权
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#332-rc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2 RC 连接场景分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3.2 RC 连接场景分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3321-rc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2.1 RC 初次连接
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3322-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2.2 已对频但本地Broker断开
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3323-rc-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2.3 RC 仅连接云端 Broker，无人机触发对频
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4 其它设备的连接
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-p0" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. P0 权限激活
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. P0 权限激活">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 为何需要权限激活管理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 激活状态广播
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 设备的互相发现
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 设备的互相发现">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#431" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3.1 心跳信息
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4311" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3.1.1 数据结构
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3.1.1 数据结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4313" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3.1.3 设备在线判断
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-p0" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4 P0权限的自动（被动）激活
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.4 P0权限的自动（被动）激活">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#441-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4.1 优先级(Priority)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#442" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4.2 自动激活场景
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#443" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4.3 触发自动激活的时机
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-p0" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.5 P0权限的主动激活
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.5 P0权限的主动激活">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#451-rc" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.5.1 RC 主动激活
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#452-p0" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.5.2 其它P0 设备主动激活
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-p1" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.6 P1权限
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.6 P1权限">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#461-p1" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.6.1 什么是 P1权限
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#462-p1" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.6.2 P1权限的分配
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 消息去重
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 消息去重">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 遥测消息
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.1 遥测消息">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#511" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.1 状态类
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#512" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2 连续类消息
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 请求消息
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 响应消息
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E7%BB%8F%E7%BA%AC%E5%BA%A6%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    经纬度解析
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    📚 书籍
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            📚 书籍
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    架构
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            架构
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%F0%9F%93%9A%20%E4%B9%A6%E7%B1%8D/%E6%9E%B6%E6%9E%84/%E6%9E%B6%E6%9E%84/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. 领域驱动核心
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    📝 开发笔记
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            📝 开发笔记
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Android
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Android
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%F0%9F%93%9D%20%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/Android/MQTT%20%E4%BB%8B%E7%BB%8D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MQTT 介绍
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_2" id="__nav_4_1_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    资料
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            资料
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%F0%9F%93%9D%20%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/Android/%E8%B5%84%E6%96%99/Android%E6%9C%AC%E5%9C%B0%E5%8C%96%E9%80%82%E9%85%8D%E4%B9%8BICU%E6%8E%A5%E5%8F%A3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Android本地化适配之ICU接口
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%F0%9F%93%9D%20%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/Android/%E8%B5%84%E6%96%99/StateMachine/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    StateMachine
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_3" id="__nav_4_1_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    踩坑
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            踩坑
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%F0%9F%93%9D%20%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/Android/%E8%B8%A9%E5%9D%91/%E5%85%A8%E5%B1%8F%E4%BB%A3%E7%A0%81/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    全屏代码
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    HarmonyOS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            HarmonyOS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%F0%9F%93%9D%20%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/HarmonyOS/%E5%85%A5%E5%8F%A3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    入口
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Python
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Python
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%F0%9F%93%9D%20%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/Python/%E7%AD%BE%E5%88%B0%E8%84%9A%E6%9C%AC/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    签到脚本
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%F0%9F%93%9D%20%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/Python/%E8%A7%A3%E6%9E%90xml%EF%BC%8C%E7%AC%A6%E5%90%88%E6%9D%A1%E4%BB%B6%E7%9A%84%E5%B0%8F%E5%86%99%E8%BD%AC%E5%A4%A7%E5%86%99/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    解析xml，符合条件的小写转大写
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    🔧工具
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            🔧工具
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%F0%9F%94%A7%E5%B7%A5%E5%85%B7/%E6%97%B6%E9%97%B4%E6%88%B3%E5%B7%A5%E5%85%B7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    时间戳工具
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    🧠 瞎折腾
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            🧠 瞎折腾
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Mkdocs
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            Mkdocs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%F0%9F%A7%A0%20%E7%9E%8E%E6%8A%98%E8%85%BE/mkdocs/Mkdocs%E9%85%8D%E7%BD%AE/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mkdocs配置
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%F0%9F%A7%A0%20%E7%9E%8E%E6%8A%98%E8%85%BE/mkdocs/%E5%AE%98%E6%96%B9%E6%95%99%E7%A8%8B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    官方教程
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 定义
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 定义">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-mqtt" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 MQTT
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1 MQTT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.1 Broker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.2 Client
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-topic" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.3 消息 Topic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-mqtt" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1.3 MQTT 连接要素
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 对频
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 加密
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.4 权限
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.4 权限">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#141" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.4.1 权限分级
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p0" class="md-nav__link">
+    <span class="md-ellipsis">
+      附：P0 权限激活
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#142-p0" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.4.2 P0 权限激活模式简述
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 本地 Broker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 本地 Broker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 连接信息的发现
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.1 连接信息的发现">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#211" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1.1 数传模块
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222-udp" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2.2 UDP 广播
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-rc" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 RC 设备连接
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-apollo" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.3 Apollo 连接
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.4 无人机关键信息获取
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 云端 Broker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 云端 Broker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-apollo" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Apollo 连接
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1 Apollo 连接">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#311" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.1 密码加盐
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#312" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.2 动态下发
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 对频连接标识
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2 对频连接标识">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#321" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.1 对频连接标识的场景
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2.1 对频连接标识的场景">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3211" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.1.1 云端登录鉴权
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3212" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.1.2 无人机重新对频
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#322-apollo" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2.2 Apollo 发布对频标识
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-rc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 RC 设备连接
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 RC 设备连接">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331-rc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.1 RC 连接鉴权
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#332-rc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2 RC 连接场景分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3.2 RC 连接场景分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3321-rc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2.1 RC 初次连接
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3322-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2.2 已对频但本地Broker断开
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3323-rc-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3.2.3 RC 仅连接云端 Broker，无人机触发对频
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4 其它设备的连接
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-p0" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. P0 权限激活
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. P0 权限激活">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 为何需要权限激活管理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 激活状态广播
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 设备的互相发现
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 设备的互相发现">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#431" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3.1 心跳信息
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4311" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3.1.1 数据结构
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3.1.1 数据结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#4313" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3.1.3 设备在线判断
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-p0" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4 P0权限的自动（被动）激活
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.4 P0权限的自动（被动）激活">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#441-priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4.1 优先级(Priority)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#442" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4.2 自动激活场景
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#443" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4.3 触发自动激活的时机
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-p0" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.5 P0权限的主动激活
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.5 P0权限的主动激活">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#451-rc" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.5.1 RC 主动激活
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#452-p0" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.5.2 其它P0 设备主动激活
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-p1" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.6 P1权限
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.6 P1权限">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#461-p1" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.6.1 什么是 P1权限
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#462-p1" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.6.2 P1权限的分配
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 消息去重
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 消息去重">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 遥测消息
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.1 遥测消息">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#511" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.1 状态类
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#512" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.2 连续类消息
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 请求消息
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 响应消息
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>MQTT 详细功能设计</h1>
+
+<h2 id="1">1. 定义<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<h3 id="11-mqtt">1.1 MQTT<a class="headerlink" href="#11-mqtt" title="Permanent link">&para;</a></h3>
+<p>MQTT（Message Queuing Telemetry Transport）是一种轻量级的、基于发布/订阅模式的消息协议。</p>
+<p>本设计文档中，不同设备间的通信方式主要采用 <code>MQTT</code> 协议。涉及发送消息，接收消息如无特殊提及，均使用 <code>MQTT</code> 协议的方式进行通信</p>
+<h4 id="111-broker">1.1.1 Broker<a class="headerlink" href="#111-broker" title="Permanent link">&para;</a></h4>
+<p>MQTT的核心思想是<strong>客户端-代理（Broker）架构</strong>。Broker 是其中承载接入客户端连接及消息转发的功能。</p>
+<p>本设计文档中，存在 2 个 Broker，一个搭建在无人机内部，一个搭建在云端服务器。为表述简单，后续使用以下名词代替
+- 本地 Broker ： 无人机内部 Broker
+- 云端 Broker ： 服务器内部 Broker</p>
+<h4 id="112-client">1.1.2 Client<a class="headerlink" href="#112-client" title="Permanent link">&para;</a></h4>
+<p>所有连接至 Broker 的设备都可以称为客户端。根据客户端类型有以下定义，后文将用定义的名词代替对应客户端：</p>
+<ul>
+<li>RC ： 遥控器</li>
+<li>Apollo ：无人机自身内部的客户端，直连到<code>本地 Broker</code></li>
+<li>三方客户端 ： 如手机APP，用户后台系统等</li>
+<li>云端服务器：涉及到云端业务的 Server 服务</li>
+</ul>
+<h4 id="113-topic">1.1.3 消息 Topic<a class="headerlink" href="#113-topic" title="Permanent link">&para;</a></h4>
+<p><code>MQTT</code> 消息的基本结构：</p>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a>Topic: XXX
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a>Data: byte[]
+</span></code></pre></div></td></tr></table></div>
+<p>每个消息都是依赖于消息本身的 <code>Topic</code> 进行发布或监听。数据本体正常以 byte 数组的方式传输。</p>
+<p>本文中所指 <code>Topic</code> 如没有特殊说明，都指代 <code>MQTT Topic</code>，现有 <code>PB Topic</code> 不作调整也不做定制。</p>
+<h4 id="113-mqtt">1.1.3 MQTT 连接要素<a class="headerlink" href="#113-mqtt" title="Permanent link">&para;</a></h4>
+<p>若想要能够进行 MQTT 通信，需要保证以下要素</p>
+<ol>
+<li>
+<p><code>Client</code> 使用正确的连接参数登入<code>Broker</code></p>
+<ul>
+<li><code>Broker</code> 服务地址</li>
+<li><code>Broker</code> 服务端口</li>
+<li>用户名（可选）</li>
+<li>密码（可选）</li>
+</ul>
+</li>
+<li>
+<p><code>Broker</code> 配置账号验证：</p>
+<ul>
+<li>若不配置账号密码，则输入任意账号密码都可以登入</li>
+<li>若配置账号密码，仅允许预配置的账号密码登入</li>
+</ul>
+</li>
+</ol>
+<p>注：<code>MQTT</code> 允许多个相同账号密码登入</p>
+<h3 id="12">1.2 对频<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
+<p>对频是 <code>RC</code> 与 <code>无人机</code> 建立内网连接的一个方式。具体硬件实现不在此讨论，通过该方式后，<code>RC</code> 与 <code>无人机</code> 的通信不依赖于4G网络。</p>
+<pre class="mermaid"><code>stateDiagram-v2
+    A:无人机
+    [*] --&gt; A 
+    state A {
+        [*] --&gt; 切换单控/多控
+        切换单控/多控 --&gt; 长按进入对频状态
+        长按进入对频状态 --&gt;  [*]
+    }
+
+    [*] --&gt; RC
+    RC: 遥控器组
+    state RC {
+        [*] --&gt; RC1
+        RC1 --&gt; 开启对频
+        [*] --&gt; RC2
+        RC2 --&gt; 开启对频
+        [*] --&gt; RC3
+        RC3 --&gt; 开启对频
+        开启对频 --&gt; [*]
+    }
+    A --&gt; 对频成功
+    RC --&gt; 对频成功
+    对频成功 --&gt; 建立连接
+    state 建立连接 {
+        direction LR
+        RC[1] --&gt; 无人机
+        RC[2] --&gt; 无人机
+        RC[3] --&gt; 无人机
+    }
+</code></pre>
+<h3 id="13">1.3 加密<a class="headerlink" href="#13" title="Permanent link">&para;</a></h3>
+<p>本文部分通信中，存在安全风险，会使用<code>RSA加密</code>并加盐的方式加密，以确保数据不会被伪造，不会被解密，文中的所有的加密都指代该种加密。
+// 演示图</p>
+<h3 id="14">1.4 权限<a class="headerlink" href="#14" title="Permanent link">&para;</a></h3>
+<p><code>Client</code> 对于发布 <code>Topic</code> 有一些限制，如在双控的环境下，没有控制权的<code>RC</code>无法对飞机进行“控制”，仅仅可以对飞机进行“观测”。这里引出“权限”概念。</p>
+<p><code>权限</code> 仅仅是对身份的描述，即对应 <code>Client</code> 有着对应能力的可能性，并非直接获取该能力，能力需要激活（Activate）。</p>
+<p><code>权限</code>仅针对于 <code>Apollo</code> 以外的 <code>Client</code>。<code>Apollo</code> 发布消息不受任何限制。</p>
+<h4 id="141">1.4.1 权限分级<a class="headerlink" href="#141" title="Permanent link">&para;</a></h4>
+<p>参考现在的比较复杂的物流机场景，可以概括为以下几类权限</p>
+<ul>
+<li>游客权限（仅观察）</li>
+<li>部分执行权限 （下发任务到无人机）</li>
+<li>一定条件下完全控制无人机权限（在后台控制无人机飞行等操作）</li>
+<li>完全权限（RC控制无人机）</li>
+</ul>
+<p>那么基于此，我们定义了以下3类权限</p>
+<table>
+<thead>
+<tr>
+<th>权限等级</th>
+<th>介绍</th>
+<th>适用场景</th>
+<th>赋予方式</th>
+<th>激活</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P2</td>
+<td>仅观察权限</td>
+<td>后台观察，远程展示</td>
+<td>所有授权登录的 <code>Client</code> 都至少是该等级,</td>
+<td>默认激活</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>可部分授权</td>
+<td>后台下发任务，控制无人机部分开关，手机APP控制飞机返航等</td>
+<td>特定<code>Client</code>里自带或服务器配置授权项</td>
+<td>服务端动态配置</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>完全权限</td>
+<td>与无人机直连的 RC 遥控器都拥有该权限</td>
+<td><code>RC</code> 在与无人机对频完成后，自动获取该无人机的完全权限</td>
+<td>条件激活，同一个无人机只存在一个<code>Client</code>被激活</td>
+</tr>
+<tr>
+<td>如<code>P0</code> 权限，仅代表该<code>Client</code>存在完全控制的可能性。</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="p0">附：P0 权限激活<a class="headerlink" href="#p0" title="Permanent link">&para;</a></h4>
+<h4 id="142-p0">1.4.2 <code>P0 权限</code>激活模式简述<a class="headerlink" href="#142-p0" title="Permanent link">&para;</a></h4>
+<p>拥有<code>P0 权限</code>的设备，在被激活（Activated）后可完全控制无人机，其余<code>P0</code> 设备失去激活。</p>
+<p>不同于现有方案的集中控制，即有一个中心服务，用于感知所有设备及<code>P0权限</code>的激活。该中心只能放置于<code>无人机</code>内，然而在不确定接入设备，及 <code>MQTT</code> 的架构下（发布者与订阅者互相不可感知），需要调整架构为，接入设备自行协商/转让<code>P0权限</code>激活状态，而非中心控制。</p>
+<p>// TODO 演示图</p>
+<h2 id="2-broker">2. 本地 Broker<a class="headerlink" href="#2-broker" title="Permanent link">&para;</a></h2>
+<p><code>RC</code> 与 <code>Apollo</code> 的通信使用 MQTT 协议，协议连接要素前面有提及，必要地需要 <code>本地 Broker</code> 的地址和端口，但是因为考虑到不同场景下（植保 / 物流），<code>本地 Broker</code> 地址及端口是可变的，需要一种发现连接信息的方式。</p>
+<p>用户名与密码不做约束，内部约定固定值即可。</p>
+<h3 id="21">2.1 连接信息的发现<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
+<h4 id="211">2.1.1 数传模块<a class="headerlink" href="#211" title="Permanent link">&para;</a></h4>
+<p>直接使用数传模块是比较安全的方式，但是当前不确定是否有提供设备发现的方法。</p>
+<p>若有提供相关方法，使用数传直接发布<code>本地 Broker</code> 的地址及端口信息。</p>
+<h4 id="222-udp">2.2.2 UDP 广播<a class="headerlink" href="#222-udp" title="Permanent link">&para;</a></h4>
+<p>该方式为备用方式，在没有有效获取连接信息的方式下，使用 UPD 广播的方式向内网设备持续广播信息。</p>
+<p>该信息需要<code>加密</code>。</p>
+<div class="language-java highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span>
+<span class="normal"><a href="#__codelineno-1-11">11</a></span>
+<span class="normal"><a href="#__codelineno-1-12">12</a></span>
+<span class="normal"><a href="#__codelineno-1-13">13</a></span>
+<span class="normal"><a href="#__codelineno-1-14">14</a></span>
+<span class="normal"><a href="#__codelineno-1-15">15</a></span>
+<span class="normal"><a href="#__codelineno-1-16">16</a></span>
+<span class="normal"><a href="#__codelineno-1-17">17</a></span>
+<span class="normal"><a href="#__codelineno-1-18">18</a></span>
+<span class="normal"><a href="#__codelineno-1-19">19</a></span>
+<span class="normal"><a href="#__codelineno-1-20">20</a></span>
+<span class="normal"><a href="#__codelineno-1-21">21</a></span>
+<span class="normal"><a href="#__codelineno-1-22">22</a></span>
+<span class="normal"><a href="#__codelineno-1-23">23</a></span>
+<span class="normal"><a href="#__codelineno-1-24">24</a></span>
+<span class="normal"><a href="#__codelineno-1-25">25</a></span>
+<span class="normal"><a href="#__codelineno-1-26">26</a></span>
+<span class="normal"><a href="#__codelineno-1-27">27</a></span>
+<span class="normal"><a href="#__codelineno-1-28">28</a></span>
+<span class="normal"><a href="#__codelineno-1-29">29</a></span>
+<span class="normal"><a href="#__codelineno-1-30">30</a></span>
+<span class="normal"><a href="#__codelineno-1-31">31</a></span>
+<span class="normal"><a href="#__codelineno-1-32">32</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">java.net.DatagramPacket</span><span class="p">;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">java.net.DatagramSocket</span><span class="p">;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">java.net.InetAddress</span><span class="p">;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">UdpSender</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">broadcastIp</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">intervalMillis</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w">        </span><span class="k">try</span><span class="w"> </span><span class="p">(</span><span class="n">DatagramSocket</span><span class="w"> </span><span class="n">socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DatagramSocket</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">            </span><span class="n">socket</span><span class="p">.</span><span class="na">setBroadcast</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w"> </span><span class="c1">// 启用广播模式</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="w">            </span><span class="n">String</span><span class="w"> </span><span class="n">localIp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">InetAddress</span><span class="p">.</span><span class="na">getLocalHost</span><span class="p">().</span><span class="na">getHostAddress</span><span class="p">();</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="w">            </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="w">                </span><span class="n">String</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Device IP: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">localIp</span><span class="p">;</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="w">                </span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message</span><span class="p">.</span><span class="na">getBytes</span><span class="p">();</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="w">                </span><span class="c1">// 广播地址，假设网段是 192.168.1.0/24</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="w">                </span><span class="n">InetAddress</span><span class="w"> </span><span class="n">broadcastAddress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">InetAddress</span><span class="p">.</span><span class="na">getByName</span><span class="p">(</span><span class="s">&quot;192.168.1.255&quot;</span><span class="p">);</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="w">                </span><span class="c1">// 创建广播数据包</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19"></a><span class="w">                </span><span class="n">DatagramPacket</span><span class="w"> </span><span class="n">packet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DatagramPacket</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">.</span><span class="na">length</span><span class="p">,</span><span class="w"> </span><span class="n">broadcastAddress</span><span class="p">,</span><span class="w"> </span><span class="n">port</span><span class="p">);</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20"></a>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21"></a><span class="w">                </span><span class="c1">// 发送广播数据包</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22"></a><span class="w">                </span><span class="n">socket</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="n">packet</span><span class="p">);</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23"></a><span class="w">                </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Broadcast sent: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">message</span><span class="p">);</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24"></a>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25"></a><span class="w">                </span><span class="c1">// 等待指定时间间隔</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26"></a><span class="w">                </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="n">intervalMillis</span><span class="p">);</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27"></a><span class="w">            </span><span class="p">}</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29"></a><span class="w">            </span><span class="n">e</span><span class="p">.</span><span class="na">printStackTrace</span><span class="p">();</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h3 id="22-rc">2.2 RC 设备连接<a class="headerlink" href="#22-rc" title="Permanent link">&para;</a></h3>
+<p>现在需要<code>RC</code> 连接 <code>本地 Broker</code> ，以下模块均在<code>RC</code>内部，使用笼统的模块对<code>RC</code>连接进行简要的流程概括</p>
+<ul>
+<li>对频模块<ul>
+<li>触发<code>对频</code>，使得<code>RC</code> 加入内网</li>
+<li>提供对频状态监听服务</li>
+</ul>
+</li>
+<li>本地 Broker信息模块<ul>
+<li>获取 MQTT 连接信息，并缓存本地</li>
+</ul>
+</li>
+<li>MQTT 通信模块<ul>
+<li>连接服务</li>
+<li>发布信息</li>
+<li>接收信息</li>
+</ul>
+</li>
+</ul>
+<p>// TODO 状态图</p>
+<h3 id="23-apollo">2.3 Apollo 连接<a class="headerlink" href="#23-apollo" title="Permanent link">&para;</a></h3>
+<p><code>Apollo</code> 与 <code>本地 Broker</code> 共处于无人机内，<code>Apollo</code>作为默认授权的设备"优先"连接</p>
+<p>优先的含义是，在 <code>本地 Broker</code> 连接信息发布前，应当确保 <code>本地 Broker</code> 启动完成，并且<code>Apollo</code> 已经成功连接。</p>
+<p>这里连接不存在安全问题，连接参数预置在 <code>Apollo</code> 内部即可，不存在获取连接参数的过程。</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Drone as Apollo
+    participant Broker as 本地 Broker
+    participant RemoteControl as RC
+
+    Drone-&gt;&gt;Broker: 开启 Broker 服务
+    Broker--&gt;&gt;Drone: Broker 服务启动成功
+    Drone-&gt;&gt;Broker: 登录到 Broker
+    Broker--&gt;&gt;Drone: 登录成功
+
+    Drone-&gt;&gt;Drone: 开始广播 Broker 连接参数
+    RemoteControl-&gt;&gt;Drone: 解析广播信息（获取地址）
+    RemoteControl-&gt;&gt;Broker: 登录到本地 Broker
+    Broker--&gt;&gt;RemoteControl: 登录成功
+
+    Drone-&gt;&gt;RemoteControl: 开始 MQTT 数据通信
+    RemoteControl-&gt;&gt;Drone: 收到数据，开始互动
+</code></pre>
+<h3 id="24">2.4 无人机关键信息获取<a class="headerlink" href="#24" title="Permanent link">&para;</a></h3>
+<p>从这里开始就涉及到和无人机的数据通信，基础数据结构参考<a href="../MQTT%20%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">MQTT 数据结构</a>里的遥测数据结构。</p>
+<p>在这里无法使用通用遥测的 <code>Tpoic</code>接收数据，因为<code>apl_id</code>的关键信息未获取，故无人机的关键信息通过以下固定 <code>Topic</code> 的方式获取</p>
+<p>注：该消息仅适用于<code>本地 Broker</code> 发布，不可通过<code>云端 Broker</code>发布，通过<code>云端 Broker</code> 登入的 <code>Client</code> 应当使用其他方式获取<code>apl_id</code>。（账号配置，团队配置等）</p>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
+<span class="normal"><a href="#__codelineno-2-2">2</a></span>
+<span class="normal"><a href="#__codelineno-2-3">3</a></span>
+<span class="normal"><a href="#__codelineno-2-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a>Topic: &quot;PresetInfo&quot; // 使用固定的Topic获取飞机的一些关键信息
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a>Body: {
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a>    pb: AplProto, 
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a>}
+</span></code></pre></div></td></tr></table></div>
+<h2 id="3-broker">3. 云端 Broker<a class="headerlink" href="#3-broker" title="Permanent link">&para;</a></h2>
+<p>由于<code>MQTT</code>的特性，已登入<code>Broker</code>的设备能够监听任何<code>Topic</code>的消息，那么就需要在登入前做好前置鉴权。</p>
+<p>鉴权有2个方式：</p>
+<ul>
+<li>账号下发</li>
+<li><code>Broker</code>校验</li>
+</ul>
+<h3 id="31-apollo">3.1 Apollo 连接<a class="headerlink" href="#31-apollo" title="Permanent link">&para;</a></h3>
+<p>云端作为辅助链路，<code>Aollo</code>需要在内网发布的信息，同等发布到云端，那么在网络可用的情况下，无人机应当登入<code>云端 Broker</code>，并在网络异常情况下，定期尝试登入<code>云端 Broker</code>。</p>
+<p>连接成功后，应当具备一份消息2条链路发送，以及响应云端到来的消息的能力。</p>
+<h4 id="311">3.1.1 密码加盐<a class="headerlink" href="#311" title="Permanent link">&para;</a></h4>
+<p><code>Apollo</code> 与 <code>云端 Broker</code> 使用相同<code>加密</code>。</p>
+<p><code>Apollo</code>使用 <code>SN</code> 作为用户名，加盐加密作为密码。</p>
+<p>登入操作时，<code>云端 Broker</code> 使用该方式解密SN是否和用户名匹配及时间戳是否与当前时间相近决定是否允许登入。</p>
+<h4 id="312">3.1.2 动态下发<a class="headerlink" href="#312" title="Permanent link">&para;</a></h4>
+<p><code>Apollo</code>通过与服务端协定 <code>云端 Broker</code> 用户名密码接口，通过请求 HTTPS 接口的方式获取密码并验证登入。</p>
+<h3 id="32">3.2 对频连接标识<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<p>对频连接标识，用于确定当前该设备是否在无人机内网内，或者说是否在本地的对频周期内，用于判断该设备是否有完整的无人机控制权限。</p>
+<p>对应的，若未连接，则不应当连入任何 <code>Broker</code>。</p>
+<p>对于内网条件下，有特定的对频回调用于判断是否连接。或者说在内网条件下，若断开和无人机的连接，则<code>本地 Broker</code> 也会直接断开。</p>
+<p>但是在外网条件下，需要有一个条件，用于使得在触发了无人机的新的对频周期后，能够有效的停止上一个周期的对频设备的连接，这个称为无人机的“对频连接标识”。</p>
+<p>该名称后续简写为<code>对频标识</code></p>
+<h4 id="321">3.2.1 对频连接标识的场景<a class="headerlink" href="#321" title="Permanent link">&para;</a></h4>
+<h5 id="3211">3.2.1.1 云端登录鉴权<a class="headerlink" href="#3211" title="Permanent link">&para;</a></h5>
+<p>遥控器设备在与无人机内网连接后，应当继续登入<code>云端 Broker</code>，且拥有该无人机的完全操控权限。</p>
+<p>需要注意以下几点：</p>
+<ul>
+<li>已连接过无人机，把一些无人机信息保存在本地的设备，可以直接连接云端，且允许登录。</li>
+<li>已连接过无人机，但是无人机经过对频导致<code>对频标识</code>发生改变后，旧的数据不应登录云端。</li>
+</ul>
+<p>那么就需要有一个鉴权标识，能够包含当前无人机的基本信息及对频过期信息。</p>
+<h5 id="3212">3.2.1.2 无人机重新对频<a class="headerlink" href="#3212" title="Permanent link">&para;</a></h5>
+<p>在无人机重新对频后，能够识别出<code>对频标识</code>更改，能够使得当前已连接设备断开。</p>
+<p>对于内网环境的设备来说比较容易区别，如果对频断开，则直接会导致<code>本地 Broker</code> 断开。</p>
+<p>对于云端连接的场景，需要存储<code>本地 Broker</code>获取的<code>对频标识</code>，并在接收到来自<code>云端 Broker</code>的<code>对频标识</code>进行匹配，确定当前状态是<code>断连</code>还是<code>重新对频</code>。</p>
+<h4 id="322-apollo">3.2.2 Apollo 发布对频标识<a class="headerlink" href="#322-apollo" title="Permanent link">&para;</a></h4>
+<p>发布<code>对频标识</code>有 2 种方式：</p>
+<ol>
+<li><code>MQTT</code>有一个特性，可以缓存一个<code>Topic</code>的最后一个消息。那么可以让<code>Apollo</code>使用该能力，将该<code>对频标识</code>使用固定 <code>Topic</code>发布，连接设备监听 <code>Topic</code>后可直接获取上次的消息。该方式存在缺点，无人机重新对频，新的<code>RC</code>会立刻收到上次<code>对频标识</code>。</li>
+<li>无人机定时<code>1HZ</code> 发布<code>对频标识</code>。该方式发布信息比较频繁，但是干扰较少。以下使用该方式实现。</li>
+</ol>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a>Topic: /t/a/{apl_id}/from_apl_q0 // 可直接使用遥测Topic
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a>Body: {
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a>    pb: AplProto, 
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a>}
+</span></code></pre></div></td></tr></table></div>
+<h3 id="33-rc">3.3 RC 设备连接<a class="headerlink" href="#33-rc" title="Permanent link">&para;</a></h3>
+<p><code>RC</code> 对与其连接的<code>Apollo</code>拥有<code>P0</code>权限，但是该权限仅能对匹配的<code>对频标识</code>生效。</p>
+<p>那么 <code>RC</code> 的连接过程中，需要增加<code>对频标识</code>的校验。</p>
+<h4 id="331-rc">3.3.1 RC 连接鉴权<a class="headerlink" href="#331-rc" title="Permanent link">&para;</a></h4>
+<p><code>RC</code>连接<code>本地 Broker</code>后，可获取到无人机关键信息，这些信息应当缓存到本地：</p>
+<ul>
+<li>无人机关键信息(sn / boom_id)</li>
+<li><code>对频标识</code></li>
+<li>对频时间戳</li>
+</ul>
+<p>以上信息作为参数通过HTTPS请求此次登入的一次性账号密码，服务端需要有着基于以上信息识别 <code>RC</code>合法的能力。</p>
+<p>附：服务端同样具备了识别 <code>RC</code> 不合法的能力：对频标识不匹配，那么可把不合法的账号强行断开。</p>
+<h4 id="332-rc">3.3.2 RC 连接场景分析<a class="headerlink" href="#332-rc" title="Permanent link">&para;</a></h4>
+<h5 id="3321-rc">3.3.2.1 RC 初次连接<a class="headerlink" href="#3321-rc" title="Permanent link">&para;</a></h5>
+<p>这种场景下，<code>RC</code> 的连接步骤：</p>
+<ol>
+<li>对频成功，登入<code>本地 Broker</code>，获取关键信息,<code>对频标识</code>后，连接<code>云端 Broker</code></li>
+<li><code>Apollo</code> 通过<code>云端 Broker</code>发布的<code>对频标识</code>，服务端同样可以正常接收（若无网，则<code>Apollo</code> 无法登入云端，即使<code>RC</code>网络可用，该链路仍然等同于失效，不考虑该场景）</li>
+<li>循环尝试请求<code>云端 Broker</code> 账号信息</li>
+<li>登入<code>云端 Broker</code> 建立连接</li>
+</ol>
+<h5 id="3322-broker">3.3.2.2 已对频但<code>本地Broker</code>断开<a class="headerlink" href="#3322-broker" title="Permanent link">&para;</a></h5>
+<ol>
+<li><code>Apollo</code> 仍然在持续发布<code>对频标识</code></li>
+<li><code>RC</code>使用上次对频成功的信息请求账号</li>
+<li>验证成功，登入<code>云端 Broker</code>建立连接</li>
+</ol>
+<h5 id="3323-rc-broker">3.3.2.3 RC 仅连接<code>云端 Broker</code>，无人机触发对频<a class="headerlink" href="#3323-rc-broker" title="Permanent link">&para;</a></h5>
+<ol>
+<li>无人机触发对频，<code>对频标识</code>发布更新</li>
+<li><code>云端 Broker</code> 识别 <code>对频标识</code> 更新，踢出<code>RC</code>（可选）</li>
+<li><code>RC</code>接收到<code>对频标识</code>，检测发生变化</li>
+<li><code>RC</code>主动与<code>云端 Broker</code></li>
+</ol>
+<h3 id="34">3.4 其它设备的连接<a class="headerlink" href="#34" title="Permanent link">&para;</a></h3>
+<p>可连接至<code>云端 Broker</code> 的角色除了无人机和 RC 外，还存在2种：</p>
+<ul>
+<li>移动设备</li>
+<li>网页后台</li>
+</ul>
+<p>整体可以统称为三方客户端，这类客户端没有直接参与无人机对频的步骤，使用者通常为无人机的所有者，及无人机的被授权者（用户，或团队成员）</p>
+<p>这些角色仅有观察无人机状态的能力，以及极少，可配置的操作无人机的能力，通常情况下应当通过用户组/授权的判断的方式获取到无人机的信息。</p>
+<h2 id="4-p0">4. <code>P0 权限</code>激活<a class="headerlink" href="#4-p0" title="Permanent link">&para;</a></h2>
+<h3 id="41">4.1 为何需要权限激活管理<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<p>对于<code>P0</code> 级权限，同一时刻仅有唯一<code>Client</code>可以激活，其余<code>Client</code>会自动失去激活，那么涉及到以下概念：</p>
+<ul>
+<li>如何知道<code>P0</code>激活者：<ul>
+<li>激活状态的广播</li>
+</ul>
+</li>
+<li>主动激活的条件<ul>
+<li>拥有<code>P0</code>级权限</li>
+</ul>
+</li>
+<li>被动激活的条件<ul>
+<li>当前没有任何<code>P0</code>权限被激活</li>
+<li>与无人机直连</li>
+<li>当前内网中，<code>优先级</code>最高</li>
+</ul>
+</li>
+</ul>
+<p>简单了解了<code>P0</code>权限激活，我们需要针对这些场景做出更详细的分析，以指定完整的激活规则</p>
+<h3 id="42">4.2 激活状态广播<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
+<p>MQTT 有一个好用的功能，前文中提到过，那就是<code>Broker 缓存</code>，对指定<code>Topic</code>开启该功能后，<code>Broker</code> 会缓存该<code>Topic</code> ，并在<code>Client</code> 注册该<code>Topic</code>的监听时，立刻返回该缓存信息。</p>
+<p>为了保证客户端都能够收到，该消息应当至少以<code>QoS 1</code>发送</p>
+<p>Topic： /t/a/{apl_id}/controlInfo</p>
+<div class="language-ProtoBuf highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
+<span class="normal"><a href="#__codelineno-4-2">2</a></span>
+<span class="normal"><a href="#__codelineno-4-3">3</a></span>
+<span class="normal"><a href="#__codelineno-4-4">4</a></span>
+<span class="normal"><a href="#__codelineno-4-5">5</a></span>
+<span class="normal"><a href="#__codelineno-4-6">6</a></span>
+<span class="normal"><a href="#__codelineno-4-7">7</a></span>
+<span class="normal"><a href="#__codelineno-4-8">8</a></span>
+<span class="normal"><a href="#__codelineno-4-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="kd">message</span><span class="w"> </span><span class="nc">ControlInfo</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="w">  </span><span class="n">Sring</span><span class="w"> </span><span class="na">controllerId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uuid</span><span class="p">,</span><span class="w"> </span><span class="c1">// 激活设备id</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">  </span><span class="n">long</span><span class="w"> </span><span class="na">timeStamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1737179678188</span><span class="p">;</span><span class="w">  </span><span class="c1">// 时间</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="w">  </span><span class="kd">enum</span><span class="w"> </span><span class="n">ChangeReason</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">      </span><span class="n">Auto</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="w">      </span><span class="n">Manual</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="w">  </span><span class="n">ChangeReason</span><span class="w"> </span><span class="n">reason</span><span class="p">;</span><span class="w"> </span><span class="c1">// 激活转让原因</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<p>通过该方式解决了：</p>
+<ul>
+<li>同无人机环境下，共用一个消息，该消息决定当前激活者，那么就不会存在多个同时激活的<code>P0</code>设备</li>
+</ul>
+<h3 id="43">4.3 设备的互相发现<a class="headerlink" href="#43" title="Permanent link">&para;</a></h3>
+<p>涉及<code>P0权限</code>的场景，为了保证<code>P0</code>权限被正确激活，我们需要明确以下几点：</p>
+<ul>
+<li>仅可存在至多 1 个 <code>Client</code> 的<code>P0</code>权限被激活</li>
+<li><code>P0 权限</code>设备之间可以通信（抢占/请求激活）</li>
+<li>不存在被激活的<code>P0 权限</code>的 <code>Client</code>时，需要有<code>P0 权限</code>的设备自动激活</li>
+<li>有<code>P0</code>设备需要激活时，可以正确激活</li>
+</ul>
+<p>更细分的拆分需求后，我们需要满足以下功能：</p>
+<ul>
+<li>感知连接环境内有哪些<code>P0</code>的设备</li>
+<li>明确<code>P0</code>设备连接的<code>Broker</code></li>
+<li>能够得知每个<code>P0</code>设备的激活状态</li>
+<li>合理的抢占/分配激活<code>P0</code>设备</li>
+</ul>
+<p>首先，为了解决环境内的<code>Client</code>被感知，引入心跳信息</p>
+<h4 id="431">4.3.1 心跳信息<a class="headerlink" href="#431" title="Permanent link">&para;</a></h4>
+<p><code>P0</code>的设备需要按照指定频率（如 <code>5 Hz</code>）发送自身心跳信息，心跳信息应当包含以下信息：</p>
+<ul>
+<li>设备的唯一标识</li>
+<li><code>P0</code>权限的优先级</li>
+</ul>
+<h4 id="4311">4.3.1.1 数据结构<a class="headerlink" href="#4311" title="Permanent link">&para;</a></h4>
+<p>Topic： /t/a/{apl_id}/heartbeat</p>
+<div class="language-ProtoBuf highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-5-10">10</a></span>
+<span class="normal"><a href="#__codelineno-5-11">11</a></span>
+<span class="normal"><a href="#__codelineno-5-12">12</a></span>
+<span class="normal"><a href="#__codelineno-5-13">13</a></span>
+<span class="normal"><a href="#__codelineno-5-14">14</a></span>
+<span class="normal"><a href="#__codelineno-5-15">15</a></span>
+<span class="normal"><a href="#__codelineno-5-16">16</a></span>
+<span class="normal"><a href="#__codelineno-5-17">17</a></span>
+<span class="normal"><a href="#__codelineno-5-18">18</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="kd">message</span><span class="w"> </span><span class="nc">Heartbeat</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="w">  </span><span class="kd">enum</span><span class="w"> </span><span class="n">Type</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">      </span><span class="n">RC</span><span class="p">,</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">      </span><span class="n">Drone</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="w">      </span><span class="n">Mobile</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="w">      </span><span class="o">...</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="w">  </span><span class="n">Type</span><span class="w"> </span><span class="na">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="w">  </span><span class="kt">string</span><span class="w"> </span><span class="na">indentify</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="c1">// </span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="w">  </span><span class="n">int</span><span class="w"> </span><span class="na">priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="c1">// 设备的优先级，对于 无人机无意义，默认是0，RC根据主/副控来决定</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="w">  </span><span class="kd">enum</span><span class="w"> </span><span class="n">Capacity</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="w">      </span><span class="na">NONE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">，</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="w">      </span><span class="na">MONITOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14"></a><span class="w">      </span><span class="na">AUTO_DRIVER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="w">      </span><span class="na">MANUAL_DRIVER</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="err">，</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17"></a><span class="w">  </span><span class="n">int</span><span class="w"> </span><span class="na">capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">  </span><span class="c1">// 该设备的能力  -  是否需要</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18"></a><span class="p">}</span>
+</span></code></pre></div></td></tr></table></div>
+<h5 id="4313">4.3.1.3 设备在线判断<a class="headerlink" href="#4313" title="Permanent link">&para;</a></h5>
+<p>感知同网络环境下的其它<code>Client</code>应当是每个<code>Client</code>的基本能力。</p>
+<ul>
+<li>本地 Broker： 检测心跳，数据来源于本地，超过 5 帧失联则判定离线</li>
+<li>云端 Broker：检测心跳，数据来源于云端，超过 5 帧失联则判定离线</li>
+</ul>
+<h3 id="44-p0">4.4 <code>P0</code>权限的自动（被动）激活<a class="headerlink" href="#44-p0" title="Permanent link">&para;</a></h3>
+<p>假设当前环境存在 A，B，C。3 个<code>RC</code>与无人机对频完成，如何处理权限的激活。</p>
+<p>若没有优先级的概念，无法决定激活设备，毕竟随机激活不合理，也不可控。</p>
+<h4 id="441-priority">4.4.1 优先级(Priority)<a class="headerlink" href="#441-priority" title="Permanent link">&para;</a></h4>
+<p><strong>适用场景</strong>：连接至<code>本地 Broker</code>的<code>P0</code>设备，在进行自动激活时使用。</p>
+<p>对于优先级的定义，拥有<code>P0</code>权限的<code>RC</code> 是可被赋予优先级，其它的<code>Client</code>无优先级/优先级最低。</p>
+<p>优先级由<code>RC</code>默认定义，如主控，辅控1，辅控2对应的优先级分别为0，1，2。</p>
+<p>当初次对频成功时，权限应当默认给到主控（0）。</p>
+<h4 id="442">4.4.2 自动激活场景<a class="headerlink" href="#442" title="Permanent link">&para;</a></h4>
+<ul>
+<li>初次对频，此时无任何<code>P0</code>设备被激活</li>
+<li>任何时期，当前被激活的<code>P0</code>设备离线</li>
+</ul>
+<h4 id="443">4.4.3 触发自动激活的时机<a class="headerlink" href="#443" title="Permanent link">&para;</a></h4>
+<p>以下所有条件均满足，则触发自动激活</p>
+<ol>
+<li>仅在<code>本地 Broker</code>环境下的<code>P0</code>设备参与</li>
+<li>对频时间晚于激活消息发布时间 / 指定时间内（3s），激活的设备离线</li>
+<li>当前<code>Client</code>的优先级最高</li>
+<li>不存在正在进行的激活请求（对于云端远程设备的请求存在请求过程）</li>
+</ol>
+<p>触发后，激活的设备发送一条<code>QoS 1</code>的广播消息。</p>
+<h3 id="45-p0">4.5 <code>P0</code>权限的主动激活<a class="headerlink" href="#45-p0" title="Permanent link">&para;</a></h3>
+<p>自动激活主要解决的场景为，在激活设备失联/不存在激活设备，使得始终有一个<code>RC</code>当前可以自动获取无人机的控制。</p>
+<p>主动激活是为了解决 <code>RC</code> 设备可以在<strong>已有激活设备</strong>的场景下进行激活状态的切换。</p>
+<p>主动激活有以下条件：</p>
+<ul>
+<li>本地或云端<code>P0</code> 设备</li>
+<li>不存在正在进行的激活请求（对于云端远程设备的请求存在请求过程）</li>
+<li>自身未激活</li>
+</ul>
+<h4 id="451-rc">4.5.1 <code>RC</code> 主动激活<a class="headerlink" href="#451-rc" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>对于 <code>MQTT</code>环境，存在网络环境，<code>Client</code>的连接状态以及消息的发布接收，悲观情况甚至需要数秒，在无人机飞行过程中如果主动激活需要协商，无法快速控制无人机，在此考虑主动激活的场景不需要协商，符合要求的<code>RC</code>可直接激活。</p>
+</blockquote>
+<p><code>RC</code> 设备拥有绝对优先级，不需要任何协商，可发布激活广播，完成激活状态的切换。</p>
+<h4 id="452-p0">4.5.2 其它<code>P0</code> 设备主动激活<a class="headerlink" href="#452-p0" title="Permanent link">&para;</a></h4>
+<p>如云端用户后台需要临时通过后台请求控制无人机</p>
+<p>该方式存在危险性，且即时性没有那么高，应当遵循以下规则：</p>
+<ul>
+<li>以指定<code>Topic</code>发布<code>QoS 2</code>云端消息，且设定回复过期时间（10s），在规定时间内收到拒绝消息则失败</li>
+<li>收到该消息时，<code>P0</code>的设备应当给出弹窗，给与用户同意/拒绝的选项，并按照选项给与回复，5s内不操作默认同意</li>
+<li>请求方应当记录请求时间，当允许完成主动激活时，对比当前的激活状态广播的时间，若比请求时间晚则取消此次流程。</li>
+</ul>
+<h3 id="46-p1">4.6 <code>P1</code>权限<a class="headerlink" href="#46-p1" title="Permanent link">&para;</a></h3>
+<h4 id="461-p1">4.6.1 什么是 <code>P1</code>权限<a class="headerlink" href="#461-p1" title="Permanent link">&para;</a></h4>
+<p><code>P1</code>权限属于会影响无人机功能，不能随意分配的权限。如下发任务，开启开关等等。</p>
+<h4 id="462-p1">4.6.2  <code>P1</code>权限的分配<a class="headerlink" href="#462-p1" title="Permanent link">&para;</a></h4>
+<p><code>P1</code>权限用于特定设备，短暂/临时控制无人机部分功能，受限于服务端的配置。</p>
+<p><code>Client</code>应当根据权限配置，仅在配置范围内发送命令</p>
+<h2 id="5">5. 消息去重<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<h3 id="51">5.1 遥测消息<a class="headerlink" href="#51" title="Permanent link">&para;</a></h3>
+<h4 id="511">5.1.1 状态类<a class="headerlink" href="#511" title="Permanent link">&para;</a></h4>
+<p>消息的ID为自增 int 值。</p>
+<p>依赖时间戳及id取最新消息使用，忽略老旧消息</p>
+<h4 id="512">5.1.2 连续类消息<a class="headerlink" href="#512" title="Permanent link">&para;</a></h4>
+<p>如无人机航迹消息等需要连续记录数据的消息，则需要窗口管理， 限定窗口大小缓存一段时间内的信息，并根据id排序</p>
+<h3 id="52">5.2 请求消息<a class="headerlink" href="#52" title="Permanent link">&para;</a></h3>
+<p>本地窗口缓存消息，若存在相同消息则不回复消息</p>
+<h3 id="53">5.3 响应消息<a class="headerlink" href="#53" title="Permanent link">&para;</a></h3>
+<p>发布的消息缓存在本地，收到回复后则立刻上报响应结果。同时移除消息缓存</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../MQTT%20%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="md-footer__link md-footer__link--prev" aria-label="上一页: MQTT 数据结构">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                MQTT 数据结构
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../%E7%BB%8F%E7%BA%AC%E5%BA%A6%E8%A7%A3%E6%9E%90/" class="md-footer__link md-footer__link--next" aria-label="下一页: 经纬度解析">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                经纬度解析
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      <a href="https://beian.miit.gov.cn/" target="blank">皖ICP备20006403号-1</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+    <a href="#" target="_blank" rel="noopener" title="btonf0302" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.33.33 0 0 0 .167-.054l1.903-1.114a.86.86 0 0 1 .717-.098 10.2 10.2 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348M5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18m5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.72.72 0 0 1 .598.082l1.584.926a.3.3 0 0 0 .14.047c.134 0 .24-.111.24-.247 0-.06-.023-.12-.038-.177l-.327-1.233a.6.6 0 0 1-.023-.156.49.49 0 0 1 .201-.398C23.024 18.48 24 16.82 24 14.98c0-3.21-2.931-5.837-6.656-6.088V8.89c-.135-.01-.27-.027-.407-.03zm-2.53 3.274c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="mailto:<btonf@outlook.com>" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m20 8-8 5-8-5V6l8 5 8-5m0-2H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.path", "navigation.top", "navigation.footer", "content.code.copy", "content.code.select", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>
