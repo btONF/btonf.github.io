@@ -253,12 +253,9 @@ message Heartbeat {
       AUTO_DRIVER = 2,
       MANUAL_DRIVER = 4，
   }
-  bool inControll = fales, // 是否有控制权 
   int capacity = 4;  // 该设备的能力  -  是否需要
 }
 ```
 
-### 请求权限
+### `P0`激活状态
 
-
-### 权限申请流程遥测
