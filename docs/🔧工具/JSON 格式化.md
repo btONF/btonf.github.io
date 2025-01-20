@@ -68,7 +68,7 @@
 	}
 	.bt-jsonformat-textarea { /* 前缀 */
 		width: 100%;
-		height: 150px;
+		height: 350px;
 		padding: 10px;
 		margin-bottom: 10px;
 		border: 1px solid #ccc;
@@ -95,6 +95,7 @@
 		border: 1px solid #ccc;
 		border-radius: 4px;
 		overflow-x: auto;
+		font-size: medium;
 	}
 	.bt-jsonformat-error { /* 前缀 */
 		color: red;
@@ -120,14 +121,14 @@
 	.bt-jsonformat-json-level-4 { color: #ffc107; }
 	.bt-jsonformat-json-level-5 { color: #17a2b8; }
 	.bt-jsonformat-json-level-6 { color: #fd7e14; } /* 新增 */
-	.bt-jsonformat-json-level-7 { color: #6f42c1; } /* 新增 */
+	.bt-jsonformat-json-level-7 { color: #9761fb; } /* 新增 */
 	.bt-jsonformat-json-level-8 { color: #e83e8c; } /* 新增 */
 	.bt-jsonformat-json-level-9 { color: #20c997; } /* 新增 */
 	.bt-jsonformat-string { color: #007bff; }
 	.bt-jsonformat-number { color: #dc3545; }
 	.bt-jsonformat-boolean { color: #28a745; }
 	.bt-jsonformat-null { color: #6c757d; }
-	.bt-jsonformat-key { color: #00008b; } /* 深蓝色 */
+	.bt-jsonformat-key { color: #5e5ef3; } /* 深蓝色 */
 	
 	
 </style>
