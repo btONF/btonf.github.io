@@ -62,10 +62,9 @@
 	.bt-jsonformat-container { /* 前缀 */
 		max-width: 800px;
 		margin: 0 auto;
-		background-color: white;
 		padding: 20px;
 		border-radius: 8px;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 4px 8px rgba(120, 120, 120, 0.4);
 	}
 	.bt-jsonformat-textarea { /* 前缀 */
 		width: 100%;
@@ -95,7 +94,6 @@
 		padding: 10px;
 		border: 1px solid #ccc;
 		border-radius: 4px;
-		background-color: #f9f9f9;
 		overflow-x: auto;
 	}
 	.bt-jsonformat-error { /* 前缀 */
