@@ -84,7 +84,7 @@ title: 首页
 	.feature {
 		flex: 1 1 calc(50% - 40px);
 		max-width: calc(50% - 40px);
-		margin: 20px;
+		margin: 10px;
 		padding: 20px;
 		border: 1px solid #ddd;
 		border-radius: 8px;

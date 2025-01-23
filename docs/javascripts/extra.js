@@ -19,7 +19,7 @@ window.onload = function () {
         y: 30 * canvas.height / 100
     };
     var dots = {
-        nb: 1000,//Dot的总数
+        nb: 500,//Dot的总数
         distance: 50,
         d_radius: 100,
         array: []
@@ -177,8 +177,10 @@ window.onload = function () {
 	splitTextAndAnimate();
 
 	// 监听窗口大小变化，重新触发动画
-	window.addEventListener('focus', function() {
-		splitTextAndAnimate(); // 页面resize后重新拆分并动画
+	window.addEventListener('visibilitychange', function() {
+		if (document.visibilityState === 'visible') {
+			splitTextAndAnimate(); // 页面resize后重新拆分并动画
+		}
 	});
 
 }
