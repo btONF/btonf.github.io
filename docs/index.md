@@ -2,7 +2,6 @@
 hide: navigation,footer
 ---
 
-# 关于
 
 ## 这是什么？
 

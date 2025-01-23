@@ -260,3 +260,8 @@ button.md-top {
   font-weight: bold; /* 修改字体粗细 */
   color: #518FC1; /* 修改字体颜色 */
 }
+
+/* 内容区域宽度 */
+.md-grid {
+  max-width: 1440px; 
+}
