@@ -1,8 +1,7 @@
 ---
-hide: navigation,footer
+hide: navigation,footer,toc
 title:
 ---
-
 
 ## 这是什么？
 
