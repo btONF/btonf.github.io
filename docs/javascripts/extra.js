@@ -10,6 +10,7 @@ window.onload = function () {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     canvas.style.position = 'fixed';
+	canvas.style.zIndex  = '-1';
     ctx.lineWidth = .3;
     ctx.strokeStyle = (new Color(150)).style;
     //定义鼠标覆盖范围

@@ -1,6 +1,7 @@
 ---
 hide: navigation,footer,toc
-title:
+title: 
+template: hero
 ---
 
 ## 这是什么？
