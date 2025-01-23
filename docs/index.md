@@ -6,10 +6,10 @@ title: 首页
  <!-- 英雄部分 -->
 <div class="hero">
 	<h1>Welcome to Bt's Docs >_</h1>
-	<center><font  color= #757575 size=6 class="ml3">“循此苦旅 以达星辰”</font></center>
+	<center><font class="anim-span"  color= #ffffff size=6 class="ml3" style="opacity:0.6">“循此苦旅 以达星辰”</font></center>
 <script src="https://cdn.statically.io/libs/animejs/2.0.2/anime.min.js"></script>
-	<a href="page1.md">快速开始</a>
-	<a href="page2.md">了解更多</a>
+	<a href="#">快速开始</a>
+	<a href="#">了解更多</a>
 </div>
 
 <!-- 功能块部分 -->
@@ -38,20 +38,18 @@ title: 首页
 
 <style>
 	
-	.md-grid {
-	  max-width: 100%; 
-	}
 	/* 英雄部分样式 */
 	.hero {
 		background: linear-gradient(135deg, #6200ee, #03dac5);
-		color: white;
 		text-align: center;
 		padding: 80px 20px;
+		border-radius:30px;
 	}
 
 	.hero h1 {
 		font-size: 2.5em;
 		margin-bottom: 15px;
+		color: white;
 	}
 
 	.hero p {
@@ -82,7 +80,6 @@ title: 首页
 		flex-wrap: wrap;
 		justify-content: center;
 		padding: 40px 20px;
-		background: white;
 	}
 
 	.feature {
@@ -147,3 +144,6 @@ title: 首页
 		display: none;
 	}
 </style>
+
+
+

@@ -137,6 +137,49 @@ window.onload = function () {
         mousePosition.x = canvas.width / 2;
         mousePosition.y = canvas.height / 2;
     })
+		// 为每个带有 anim-span 类的元素添加文字拆分和动画
+	function splitTextAndAnimate() {
+		// 查找所有 class 为 anim-span 的元素
+		document.querySelectorAll('.anim-span').forEach(textElement => {
+			const textContent = textElement.textContent;
+
+			// 清空内容并按字符拆分
+			textElement.innerHTML = '';
+			textContent.split('').forEach(char => {
+				const span = document.createElement('span');
+				span.classList.add('letter');
+				span.textContent = char;
+				textElement.appendChild(span);
+			});
+
+			// 使用 Anime.js 为拆分后的文字应用动画
+			anime.timeline({loop: true})
+				.add({
+					targets: textElement.querySelectorAll('.letter'),
+					opacity: [0, 1],
+					translateY: [20, 0],
+					easing: 'easeOutExpo',
+					duration: 1000,
+					delay: anime.stagger(100), // 每个字符的延迟
+				})
+				.add({
+					targets: textElement.querySelectorAll('.letter'),
+					opacity: [1, 0],
+					translateY: [0, 20],
+					easing: 'easeInExpo',
+					duration: 1000,
+					delay: anime.stagger(100),
+				});
+		});
+	}
+
+	// 页面加载时执行一次拆分和动画
+	splitTextAndAnimate();
+
+	// 监听窗口大小变化，重新触发动画
+	window.addEventListener('resize', function() {
+		splitTextAndAnimate(); // 页面resize后重新拆分并动画
+	});
 
 }
 
