@@ -1,142 +1,148 @@
-/*背景*/
-window.onload = function () {
-    //定义body的margin由默认值8px->0px
-    document.body.style.margin = "0";
-    document.body.style.background = "255,255,255";
-    //创建canvas画布
-    document.body.appendChild(document.createElement('canvas'));
-    var canvas = document.querySelector('canvas'),
-        ctx = canvas.getContext('2d') //ctx返回一个在canvas上画图的api/dom
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    canvas.style.position = 'fixed';
-    ctx.lineWidth = .3;
-    ctx.strokeStyle = (new Color(150)).style;
-    //定义鼠标覆盖范围
-    var mousePosition = {
-        x: 30 * canvas.width / 100,
-        y: 30 * canvas.height / 100
-    };
-    var dots = {
-        nb: 1000,//Dot的总数
-        distance: 50,
-        d_radius: 100,
-        array: []
-    };
-    //创建颜色类，Color类返回字符串型rgba（*,*,*,.8）
-    function mixComponents(comp1, weight1, comp2, weight2) {
-        return (comp1 * weight1 + comp2 * weight2) / (weight1 + weight2);
-    }
-    function averageColorStyles(dot1, dot2) {
-        var color1 = dot1.color,
-            color2 = dot2.color;
+//雪花
+const fps = 30;
+const mspf = Math.floor(1000 / fps) ; 
 
-        var r = mixComponents(color1.r, dot1.radius, color2.r, dot2.radius),
-            g = mixComponents(color1.g, dot1.radius, color2.g, dot2.radius),
-            b = mixComponents(color1.b, dot1.radius, color2.b, dot2.radius);
-        return createColorStyle(Math.floor(r), Math.floor(g), Math.floor(b));
-    }
-    function colorValue(min) {
-        return Math.floor(Math.random() * 255 + min);
-    }
-    function createColorStyle(r, g, b) {
-        return 'rgba(' + r + ',' + g + ',' + b + ', 0.8)';
-    }
-    function Color(min) {
-        min = min || 0;
-        this.r = colorValue(min);
-        this.g = colorValue(min);
-        this.b = colorValue(min);
-        this.style = createColorStyle(this.r, this.g, this.b);
-    }
-    //创建Dot类以及一系列方法
-    function Dot() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
+let width = window.innerWidth || document.documentElement.clientWidth;
+let height = window.innerHeight || document.documentElement.clientHeight;
+let canvas;
+window.addEventListener('resize', () => {
+  width = window.innerWidth || document.documentElement.clientWidth;
+  height = window.innerHeight || document.documentElement.clientHeight;
+  if (canvas) {
+    canvas.width = width;
+    canvas.height = height;
+  }
+});
 
-        this.vx = -.5 + Math.random();
-        this.vy = -.5 + Math.random();
+let particles = [];
+let wind = [0, 0];
+let cursor = [0, 0];
 
-        this.radius = Math.random() * 2;
-
-        this.color = new Color();
-    }
-
-    Dot.prototype = {
-        draw: function () {
-            ctx.beginPath();
-            ctx.fillStyle = this.color.style;
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-            ctx.fill();
-        }
-    };
-    function moveDots() {//Dot对象的移动
-        for (i = 0; i < dots.nb; i++) {
-
-            var dot = dots.array[i];
-
-            if (dot.y < 0 || dot.y > canvas.height) {
-                dot.vx = dot.vx;
-                dot.vy = - dot.vy;
-            }
-            else if (dot.x < 0 || dot.x > canvas.width) {
-                dot.vx = - dot.vx;
-                dot.vy = dot.vy;
-            }
-            dot.x += dot.vx;
-            dot.y += dot.vy;
-        }
-    }
-    function connectDots() {//DOt对象的连接
-        for (i = 0; i < dots.nb; i++) {
-            for (j = i; j < dots.nb; j++) {
-                i_dot = dots.array[i];
-                j_dot = dots.array[j];
-
-                if ((i_dot.x - j_dot.x) < dots.distance && (i_dot.y - j_dot.y) < dots.distance && (i_dot.x - j_dot.x) > - dots.distance && (i_dot.y - j_dot.y) > - dots.distance) {
-                    if ((i_dot.x - mousePosition.x) < dots.d_radius && (i_dot.y - mousePosition.y) < dots.d_radius && (i_dot.x - mousePosition.x) > - dots.d_radius && (i_dot.y - mousePosition.y) > - dots.d_radius) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = averageColorStyles(i_dot, j_dot);
-                        ctx.moveTo(i_dot.x, i_dot.y);
-                        ctx.lineTo(j_dot.x, j_dot.y);
-                        ctx.stroke();//绘制定义的路线
-                        ctx.closePath();//创建从当前点回到起始点的路径
-                    }
-                }
-            }
-        }
-    }
-    function createDots() {//创建nb个Dot对象
-        for (i = 0; i < dots.nb; i++) {
-            dots.array.push(new Dot());
-        }
-    }
-    function drawDots() {//引用Dot原型链，使用draw方法，在canvas上画出Dot对象
-        for (i = 0; i < dots.nb; i++) {
-            var dot = dots.array[i];
-            dot.draw();
-        }
-    }
-    function animateDots() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);//清除画布，否则线条会连在一起
-        moveDots();
-        connectDots();
-        drawDots();
-        requestAnimationFrame(animateDots);
-    }
-    createDots();//使用创建Dot类函数
-    requestAnimationFrame(animateDots);//使用canvas独有的60Hz刷新屏幕画布的方法
-
-    document.querySelector('canvas').addEventListener('mousemove', function (e) {
-        mousePosition.x = e.pageX;
-        mousePosition.y = e.pageY;
-    })
-
-    document.querySelector('canvas').addEventListener('mouseleave', function (e) {//鼠标离开时，连接自动返回到画布中心
-        mousePosition.x = canvas.width / 2;
-        mousePosition.y = canvas.height / 2;
-    })
-
+function velocity(r) {
+  return 70 / r + 30;
 }
 
-/*背景end*/
+function sine_component(h, a) {
+  return [2 * Math.PI / h, Math.random() * a, Math.random() * 2 * Math.PI]; // [frequency, amplitude, phase]
+}
+
+function calc_sine(components, x) {
+  let sum = 0;
+  for (let i = 0; i < components.length; i++) {
+    const [f, a, p] = components[i];
+    sum += Math.sin(x * f + p) * a;
+  }
+  return sum;
+}
+
+function gen_particle() {
+  let r = Math.random() * 4 + 1;
+  return {
+    radius: r,
+    x: Math.random() * width,
+    y: -r,
+    opacity: Math.random(),
+    sine_components: [sine_component(height, 3), sine_component(height / 2, 2), sine_component(height / 5, 1), sine_component(height / 10, 0.5)],
+  };
+}
+
+function update_pos(dt) {
+  const n = particles.length;
+  for (let i = 0; i < n; i++) {
+    const v = velocity(particles[i].radius);
+    particles[i].x += calc_sine(particles[i].sine_components, particles[i].y) * v / 5 * dt;
+    particles[i].y += v * dt;
+
+    // const dist = Math.hypot(particles[i].x - cursor[0], particles[i].y - cursor[1]) + 1;
+    // particles[i].x += wind[0] * dt / dist
+    // particles[i].y += wind[1] * dt / dist;
+
+    if (particles[i].y - particles[i].radius > height) {
+      particles[i] = gen_particle();  
+    }
+  }
+}
+
+let context_cache;
+function get_context() {
+  if (context_cache)
+    return context_cache;
+
+  canvas = document.createElement('canvas');
+  canvas.id = 'snow-canvas';
+  canvas.width = width;
+  canvas.height = height;
+  canvas.style = 'position: fixed; top: 0; left: 0; overflow: hidden; pointer-events: none; z-index: 256;';
+  if ((document.documentElement.dataset.darkreaderMode || "").startsWith('filter'))
+    canvas.style.filter = 'invert(1)';
+  document.body.appendChild(canvas);
+
+  context_cache = canvas.getContext('2d');
+  return context_cache;
+}
+
+function draw() {
+  const ctx = get_context();
+
+  ctx.clearRect(0, 0, width, height);
+
+  const n = particles.length;
+  for (let i = 0; i < n; i++) {
+    const p = particles[i];
+    ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+    ctx.shadowColor = '#80EDF7';
+    ctx.shadowBlur = 7;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.radius, 0, 2*Math.PI);
+    ctx.fill();
+  }
+}
+
+let focused = true;
+let disabled = false;
+let lastTime = performance.now();
+const requestFrame = () => setTimeout(loop, mspf);
+function loop() {
+  const dt = (performance.now() - lastTime) / 1000;
+
+  if (particles.length < 120 && Math.random() < 0.1) {
+    particles.push(gen_particle());
+  }
+
+  update_pos(dt);
+  draw();
+
+  lastTime = performance.now();
+  if (focused && !disabled)
+    requestFrame();
+}
+
+
+window.addEventListener('focus', () => {
+  console.log('snow start');
+  focused = true;
+  lastTime = performance.now();
+  requestFrame();
+});
+
+window.addEventListener('blur', () => {
+  console.log('snow stop');
+  focused = false;
+});
+
+window.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key == 's') {
+    e.preventDefault();
+    disabled = !disabled;
+    if (disabled) {
+      canvas.style.display = 'none';
+    } else {
+      canvas.style.display = 'block';
+      lastTime = performance.now();
+      requestFrame();
+    }
+  }
+});
+
+requestFrame();
+//雪花
