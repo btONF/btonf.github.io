@@ -2,11 +2,15 @@ site_name: Bt's Docs >_
 site_url: https://doc.ccc2.icu
 site_author: bt
 copyright: <a href="https://beian.miit.gov.cn/" target="blank">皖ICP备20006403号-1</a>
+repo_url: https://github.com/btONF/btonf.github.io #存储库URL
+repo_name: btONF/btonf.github.io
 theme:
     name: 'material'
     language: zh
     logo: logo.svg
     favicon : logo.svg
+    icon:
+      repo: fontawesome/brands/git-alt
     palette:
     # Light mode
     - media: "(prefers-color-scheme: light)"
