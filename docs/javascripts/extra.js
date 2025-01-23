@@ -19,7 +19,7 @@ window.onload = function () {
         y: 30 * canvas.height / 100
     };
     var dots = {
-        nb: 1000,//Dot的总数
+        nb: 400,//Dot的总数
         distance: 50,
         d_radius: 100,
         array: []
