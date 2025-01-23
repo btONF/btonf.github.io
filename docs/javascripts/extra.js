@@ -177,7 +177,7 @@ window.onload = function () {
 	splitTextAndAnimate();
 
 	// 监听窗口大小变化，重新触发动画
-	window.addEventListener('resize', function() {
+	window.addEventListener('focus', function() {
 		splitTextAndAnimate(); // 页面resize后重新拆分并动画
 	});
 
