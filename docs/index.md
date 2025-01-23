@@ -7,7 +7,6 @@ title: 首页
 <div class="hero">
 	<h1>Welcome to Bt's Docs >_</h1>
 	<center><font class="anim-span"  color= #ffffff size=6 class="ml3" style="opacity:0.6">“循此苦旅 以达星辰”</font></center>
-<script src="https://cdn.statically.io/libs/animejs/2.0.2/anime.min.js"></script>
 	<a href="#">快速开始</a>
 	<a href="#">了解更多</a>
 </div>
@@ -83,8 +82,8 @@ title: 首页
 	}
 
 	.feature {
-		flex: 1 1 calc(33.33% - 40px);
-		max-width: calc(33.33% - 40px);
+		flex: 1 1 calc(50% - 40px);
+		max-width: calc(50% - 40px);
 		margin: 20px;
 		padding: 20px;
 		border: 1px solid #ddd;
@@ -143,7 +142,11 @@ title: 首页
 	.content__inner h1 {
 		display: none;
 	}
+	.md-content {
+		max-width: 50rem;
+		margin:0 auto;
+	}
 </style>
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"</script>
 
