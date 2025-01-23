@@ -1,94 +1,148 @@
-!function() {
-    function o(w, v, i) {
-        return w.getAttribute(v) || i
+//雪花
+const fps = 30;
+const mspf = Math.floor(1000 / fps) ; 
+
+let width = window.innerWidth || document.documentElement.clientWidth;
+let height = window.innerHeight || document.documentElement.clientHeight;
+let canvas;
+window.addEventListener('resize', () => {
+  width = window.innerWidth || document.documentElement.clientWidth;
+  height = window.innerHeight || document.documentElement.clientHeight;
+  if (canvas) {
+    canvas.width = width;
+    canvas.height = height;
+  }
+});
+
+let particles = [];
+let wind = [0, 0];
+let cursor = [0, 0];
+
+function velocity(r) {
+  return 70 / r + 30;
+}
+
+function sine_component(h, a) {
+  return [2 * Math.PI / h, Math.random() * a, Math.random() * 2 * Math.PI]; // [frequency, amplitude, phase]
+}
+
+function calc_sine(components, x) {
+  let sum = 0;
+  for (let i = 0; i < components.length; i++) {
+    const [f, a, p] = components[i];
+    sum += Math.sin(x * f + p) * a;
+  }
+  return sum;
+}
+
+function gen_particle() {
+  let r = Math.random() * 4 + 1;
+  return {
+    radius: r,
+    x: Math.random() * width,
+    y: -r,
+    opacity: Math.random(),
+    sine_components: [sine_component(height, 3), sine_component(height / 2, 2), sine_component(height / 5, 1), sine_component(height / 10, 0.5)],
+  };
+}
+
+function update_pos(dt) {
+  const n = particles.length;
+  for (let i = 0; i < n; i++) {
+    const v = velocity(particles[i].radius);
+    particles[i].x += calc_sine(particles[i].sine_components, particles[i].y) * v / 5 * dt;
+    particles[i].y += v * dt;
+
+    // const dist = Math.hypot(particles[i].x - cursor[0], particles[i].y - cursor[1]) + 1;
+    // particles[i].x += wind[0] * dt / dist
+    // particles[i].y += wind[1] * dt / dist;
+
+    if (particles[i].y - particles[i].radius > height) {
+      particles[i] = gen_particle();  
     }
-    function j(i) {
-        return document.getElementsByTagName(i)
+  }
+}
+
+let context_cache;
+function get_context() {
+  if (context_cache)
+    return context_cache;
+
+  canvas = document.createElement('canvas');
+  canvas.id = 'snow-canvas';
+  canvas.width = width;
+  canvas.height = height;
+  canvas.style = 'position: fixed; top: 0; left: 0; overflow: hidden; pointer-events: none; z-index: 256;';
+  if ((document.documentElement.dataset.darkreaderMode || "").startsWith('filter'))
+    canvas.style.filter = 'invert(1)';
+  document.body.appendChild(canvas);
+
+  context_cache = canvas.getContext('2d');
+  return context_cache;
+}
+
+function draw() {
+  const ctx = get_context();
+
+  ctx.clearRect(0, 0, width, height);
+
+  const n = particles.length;
+  for (let i = 0; i < n; i++) {
+    const p = particles[i];
+    ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+    ctx.shadowColor = '#80EDF7';
+    ctx.shadowBlur = 7;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.radius, 0, 2*Math.PI);
+    ctx.fill();
+  }
+}
+
+let focused = true;
+let disabled = false;
+let lastTime = performance.now();
+const requestFrame = () => setTimeout(loop, mspf);
+function loop() {
+  const dt = (performance.now() - lastTime) / 1000;
+
+  if (particles.length < 120 && Math.random() < 0.1) {
+    particles.push(gen_particle());
+  }
+
+  update_pos(dt);
+  draw();
+
+  lastTime = performance.now();
+  if (focused && !disabled)
+    requestFrame();
+}
+
+
+window.addEventListener('focus', () => {
+  console.log('snow start');
+  focused = true;
+  lastTime = performance.now();
+  requestFrame();
+});
+
+window.addEventListener('blur', () => {
+  console.log('snow stop');
+  focused = false;
+});
+
+window.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key == 's') {
+    e.preventDefault();
+    disabled = !disabled;
+    if (disabled) {
+      canvas.style.display = 'none';
+    } else {
+      canvas.style.display = 'block';
+      lastTime = performance.now();
+      requestFrame();
     }
-    function l() {
-        var i = j("script"),
-        w = i.length,
-        v = i[w - 1];
-        return {
-            l: w,
-            z: o(v, "zIndex", -1),
-            o: o(v, "opacity", 0.5),
-            c: o(v, "color", "0,0,0"),
-            n: o(v, "count", 99)
-        }
-    }
-    function k() {
-        r = u.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
-        n = u.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-    }
-    function b() {
-        e.clearRect(0, 0, r, n);
-        var w = [f].concat(t);
-        var x, v, A, B, z, y;
-        t.forEach(function(i) {
-            i.x += i.xa,
-            i.y += i.ya,
-            i.xa *= i.x > r || i.x < 0 ? -1 : 1,
-            i.ya *= i.y > n || i.y < 0 ? -1 : 1,
-            e.fillRect(i.x - 0.5, i.y - 0.5, 1, 1);
-            for (v = 0; v < w.length; v++) {
-                x = w[v];
-                if (i !== x && null !== x.x && null !== x.y) {
-                    B = i.x - x.x,
-                    z = i.y - x.y,
-                    y = B * B + z * z;
-                    y < x.max && (x === f && y >= x.max / 2 && (i.x -= 0.03 * B, i.y -= 0.03 * z), A = (x.max - y) / x.max, e.beginPath(), e.lineWidth = A / 2, e.strokeStyle = "rgba(" + s.c + "," + (A + 0.2) + ")", e.moveTo(i.x, i.y), e.lineTo(x.x, x.y), e.stroke())
-                }
-            }
-            w.splice(w.indexOf(i), 1)
-        }),
-        m(b)
-    }
-    var u = document.createElement("canvas"),
-    s = l(),
-    c = "c_n" + s.l,
-    e = u.getContext("2d"),
-    r,
-    n,
-    m = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
-    function(i) {
-        window.setTimeout(i, 1000 / 45)
-    },
-    a = Math.random,
-    f = {
-        x: null,
-        y: null,
-        max: 20000
-    };
-    u.id = c;
-    u.style.cssText = "position:fixed;top:0;left:0;z-index:" + s.z + ";opacity:" + s.o;
-    j("body")[0].appendChild(u);
-    k(),
-    window.onresize = k;
-    window.onmousemove = function(i) {
-        i = i || window.event,
-        f.x = i.clientX,
-        f.y = i.clientY
-    },
-    window.onmouseout = function() {
-        f.x = null,
-        f.y = null
-    };
-    for (var t = [], p = 0; s.n > p; p++) {
-        var h = a() * r,
-        g = a() * n,
-        q = 2 * a() - 1,
-        d = 2 * a() - 1;
-        t.push({
-            x: h,
-            y: g,
-            xa: q,
-            ya: d,
-            max: 6000
-        })
-    }
-    setTimeout(function() {
-        b()
-    },
-    100)
-} ();
+  }
+});
+
+requestFrame();
+//雪花

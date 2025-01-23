@@ -35,9 +35,11 @@ theme:
         - navigation.path
         - navigation.top
         - navigation.footer
+        - navigation.expand     
         - content.code.copy
         - content.code.select
         - content.code.annotate
+        
 # Extensions
 markdown_extensions:
   - footnotes
