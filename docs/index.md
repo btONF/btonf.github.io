@@ -7,8 +7,6 @@ title: 首页
 <div class="hero">
 	<h1>Welcome to Bt's Docs >_</h1>
 	<center><font class="anim-span"  color= #ffffff size=6 class="ml3" style="opacity:0.6">“循此苦旅 以达星辰”</font></center>
-	<a href="#">快速开始</a>
-	<a href="#">了解更多</a>
 </div>
 
 <div class="grid cards" markdown>
@@ -19,7 +17,7 @@ title: 首页
 
 	开发命令备忘
 
-    [[常用命令]]{ .md-button }
+    [:octicons-arrow-right-24: [常用命令]]
 
 -   :fontawesome-solid-gear:{ .lg .middle } __Material 配置__
 
@@ -27,7 +25,7 @@ title: 首页
 
     - [:material-emoticon-devil:  表情](https://squidfunk.github.io/mkdocs-material/reference/icons-emojis/)
 
-    [更多](https://squidfunk.github.io/mkdocs-material/setup/){ .md-button }
+    [:octicons-arrow-right-24: 更多配置](https://squidfunk.github.io/mkdocs-material/setup/)
 
 -   :material-chart-bar:{ .lg .middle } __Mermaid__
 
@@ -36,15 +34,13 @@ title: 首页
     - [泳道图](https://mermaid.js.org/syntax/sequenceDiagram.html)
     - [流程图](https://mermaid.js.org/syntax/flowchart.html)
 
-    [更多](https://mermaid.js.org/intro/)
+    [:octicons-arrow-right-24: 更多图表](https://mermaid.js.org/intro/)
 
--   :material-scale-balance:{ .lg .middle } __Open Source, MIT__
+-   :material-library:{ .lg .middle } __资源收集__
 
     ---
 
-    Material for MkDocs is licensed under MIT and available on [GitHub]
-
-    [:octicons-arrow-right-24: License](#)
+	- [[图标库]]
 
 </div>
 <style>
@@ -53,7 +49,7 @@ title: 首页
 	.hero {
 		background: linear-gradient(135deg, #6200ee, #03dac5);
 		text-align: center;
-		padding: 80px 20px;
+		padding: 80px 40px;
 		border-radius:30px;
 	}
 
@@ -68,22 +64,6 @@ title: 首页
 		margin-bottom: 25px;
 	}
 
-	.hero a {
-		display: inline-block;
-		margin: 10px;
-		padding: 10px 20px;
-		background: white;
-		color: #6200ee;
-		text-decoration: none;
-		border-radius: 5px;
-		font-weight: bold;
-		transition: background 0.3s, color 0.3s;
-	}
-
-	.hero a:hover {
-		background: #3700b3;
-		color: white;
-	}
 
 	.content__inner h1 {
 		display: none;
