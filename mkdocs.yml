@@ -1,7 +1,7 @@
 site_name: Bt's Docs >_
 site_url: https://doc.ccc2.icu
 site_author: bt
-copyright: <a href="https://beian.miit.gov.cn/" target="blank">皖ICP备20006403号-1</a>
+copyright: <a href="https://beian.miit.gov.cn/" target="blank">皖ICP备20006403号-1</a> © 2024 - 2025 CCC2
 repo_url: https://github.com/btONF/btonf.github.io #存储库URL
 repo_name: btONF/btonf.github.io
 theme:
@@ -9,6 +9,9 @@ theme:
     language: zh
     logo: logo.svg
     favicon : logo.svg
+    font:
+      text: Ma Shan Zheng
+      code: Roboto Mono
     icon:
       repo: fontawesome/brands/git-alt
     palette:
