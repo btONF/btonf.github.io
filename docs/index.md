@@ -1,12 +1,12 @@
 ---
 hide: navigation,footer,toc
-title: 首页
+title: 🏠首页
 ---
 
  <!-- 英雄部分 -->
 <div class="hero">
 	<h1>Welcome to Bt's Docs >_</h1>
-	<center><font class="anim-span"  color= #ffffff size=6 class="ml3" style="opacity:0.6">“循此苦旅 以达星辰”</font></center>
+	<center><font class="anim-span"  color= #ffffff size=6 class="ml3" style="opacity:0.6">“不为草木，随遇而安”</font></center>
 </div>
 
 <div class="grid cards" markdown>
