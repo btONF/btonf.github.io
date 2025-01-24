@@ -147,7 +147,7 @@ title: 首页
 		margin:0 auto;
 	}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script src=""></script>
 <script>
 	// 为每个带有 anim-span 类的元素添加文字拆分和动画
 	function splitTextAndAnimate() {
