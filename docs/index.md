@@ -17,7 +17,7 @@ title: 首页
 
 	开发命令备忘
 
-    [:octicons-arrow-right-24: [常用命令]]
+    [[常用命令|:octicons-arrow-right-24: 查看]]
 
 -   :fontawesome-solid-gear:{ .lg .middle } __Material 配置__
 
@@ -40,7 +40,7 @@ title: 首页
 
     ---
 
-	- [[图标库]]
+	- [[图标库|svg 图标]]
 
 </div>
 <style>
