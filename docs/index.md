@@ -13,30 +13,30 @@ title: 首页
 
 <div class="grid cards" markdown>
 
--   :material-clock-fast:{ .lg .middle } __Set up in 5 minutes__
+-   :simple-android:{ .lg .middle } __Android 常用命令__
 
     ---
 
-    Install [`mkdocs-material`](#) with [`pip`](#) and get up
-    and running in minutes
+	开发命令备忘
 
-    [:octicons-arrow-right-24: Getting started](#){ .md-button }
+    [[常用命令]]{ .md-button }
 
--   :fontawesome-brands-markdown:{ .lg .middle } __It's just Markdown__
-
-    ---
-
-    Focus on your content and generate a responsive and searchable static site
-
-    [:octicons-arrow-right-24: Reference](#){ .md-button .md-button--primary }
-
--   :material-format-font:{ .lg .middle } __Made to measure__
+-   :fontawesome-solid-gear:{ .lg .middle } __Material 配置__
 
     ---
 
-    Change the colors, fonts, language, icons, logo and more with a few lines
+    - [:material-emoticon-devil:  表情](https://squidfunk.github.io/mkdocs-material/reference/icons-emojis/)
 
-    [:octicons-arrow-right-24: Customization](#)
+    [更多](https://squidfunk.github.io/mkdocs-material/setup/){ .md-button }
+
+-   :material-chart-bar:{ .lg .middle } __Mermaid__
+
+    ---
+
+    - [泳道图](https://mermaid.js.org/syntax/sequenceDiagram.html)
+    - [流程图](https://mermaid.js.org/syntax/flowchart.html)
+
+    [更多](https://mermaid.js.org/intro/)
 
 -   :material-scale-balance:{ .lg .middle } __Open Source, MIT__
 
@@ -96,38 +96,42 @@ title: 首页
 <script>
 	// 为每个带有 anim-span 类的元素添加文字拆分和动画
 	function splitTextAndAnimate() {
-		// 查找所有 class 为 anim-span 的元素
-		document.querySelectorAll('.anim-span').forEach(textElement => {
-			const textContent = textElement.textContent;
-
-			// 清空内容并按字符拆分
-			textElement.innerHTML = '';
-			textContent.split('').forEach(char => {
-				const span = document.createElement('span');
-				span.classList.add('letter');
-				span.textContent = char;
-				textElement.appendChild(span);
-			});
-
-			// 使用 Anime.js 为拆分后的文字应用动画
-			anime.timeline({loop: true})
-				.add({
-					targets: textElement.querySelectorAll('.letter'),
-					opacity: [0, 1],
-					translateY: [20, 0],
-					easing: 'easeOutExpo',
-					duration: 1000,
-					delay: anime.stagger(100), // 每个字符的延迟
-				})
-				.add({
-					targets: textElement.querySelectorAll('.letter'),
-					opacity: [1, 0],
-					translateY: [0, 20],
-					easing: 'easeInExpo',
-					duration: 1000,
-					delay: anime.stagger(100),
+		try {
+			// 查找所有 class 为 anim-span 的元素
+			document.querySelectorAll('.anim-span').forEach(textElement => {
+				const textContent = textElement.textContent;
+	
+				// 清空内容并按字符拆分
+				textElement.innerHTML = '';
+				textContent.split('').forEach(char => {
+					const span = document.createElement('span');
+					span.classList.add('letter');
+					span.textContent = char;
+					textElement.appendChild(span);
 				});
-		});
+	
+				// 使用 Anime.js 为拆分后的文字应用动画
+				anime.timeline({loop: true})
+					.add({
+						targets: textElement.querySelectorAll('.letter'),
+						opacity: [0, 1],
+						translateY: [20, 0],
+						easing: 'easeOutExpo',
+						duration: 1000,
+						delay: anime.stagger(100), // 每个字符的延迟
+					})
+					.add({
+						targets: textElement.querySelectorAll('.letter'),
+						opacity: [1, 0],
+						translateY: [0, 20],
+						easing: 'easeInExpo',
+						duration: 1000,
+						delay: anime.stagger(100),
+					});
+			});
+		 } catch (error) { 
+			 console.log(error); // 或其他的错误处理
+		 }
 	}
 	splitTextAndAnimate(); 
 	// 监听窗口大小变化，重新触发动画
