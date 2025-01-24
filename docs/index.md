@@ -147,7 +147,6 @@ title: 首页
 		margin:0 auto;
 	}
 </style>
-<script src=""></script>
 <script>
 	// 为每个带有 anim-span 类的元素添加文字拆分和动画
 	function splitTextAndAnimate() {
@@ -185,8 +184,10 @@ title: 首页
 		});
 	}
 
-	// 页面加载时执行一次拆分和动画
-	splitTextAndAnimate();
+	// 监听窗口大小变化，重新触发动画
+	window.addEventListener('load', function() {
+		splitTextAndAnimate(); // 页面resize后重新拆分并动画
+	});
 
 	// 监听窗口大小变化，重新触发动画
 	window.addEventListener('resize', function() {
