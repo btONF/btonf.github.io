@@ -18,12 +18,12 @@ window.onload = function () {
 
     // 定义鼠标覆盖范围
     var mousePosition = {
-        x: 30 * canvas.width / 100,
-        y: 30 * canvas.height / 100
+        x: -1000,
+        y: -1000
     };
 
     var dots = {
-        nb: Math.floor((canvas.width * canvas.height) / 3000), // 点的数量根据屏幕大小适配
+        nb: Math.floor((canvas.width * canvas.height) / 5000), // 点的数量根据屏幕大小适配
         distance: 50,
         d_radius: 100,
         array: []

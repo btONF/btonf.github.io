@@ -11,30 +11,42 @@ title: 首页
 	<a href="#">了解更多</a>
 </div>
 
-<!-- 功能块部分 -->
-<div class="features">
-	<div class="feature">
-		<h3>功能 1</h3>
-		<p>探索我们的第一个功能，帮助您快速完成任务。</p>
-		<a href="page1.md">了解更多</a>
-	</div>
-	<div class="feature">
-		<h3>功能 2</h3>
-		<p>使用我们提供的工具提升您的工作效率。</p>
-		<a href="page2.md">了解更多</a>
-	</div>
-	<div class="feature">
-		<h3>功能 3</h3>
-		<p>获取详细的文档说明，轻松掌握使用技巧。</p>
-		<a href="page3.md">了解更多</a>
-	</div>
-	<div class="feature">
-		<h3>功能 4</h3>
-		<p>获取详细的文档说明，轻松掌握使用技巧。</p>
-		<a href="page3.md">了解更多</a>
-	</div>
-</div>
+<div class="grid cards" markdown>
 
+-   :material-clock-fast:{ .lg .middle } __Set up in 5 minutes__
+
+    ---
+
+    Install [`mkdocs-material`](#) with [`pip`](#) and get up
+    and running in minutes
+
+    [:octicons-arrow-right-24: Getting started](#){ .md-button }
+
+-   :fontawesome-brands-markdown:{ .lg .middle } __It's just Markdown__
+
+    ---
+
+    Focus on your content and generate a responsive and searchable static site
+
+    [:octicons-arrow-right-24: Reference](#){ .md-button .md-button--primary }
+
+-   :material-format-font:{ .lg .middle } __Made to measure__
+
+    ---
+
+    Change the colors, fonts, language, icons, logo and more with a few lines
+
+    [:octicons-arrow-right-24: Customization](#)
+
+-   :material-scale-balance:{ .lg .middle } __Open Source, MIT__
+
+    ---
+
+    Material for MkDocs is licensed under MIT and available on [GitHub]
+
+    [:octicons-arrow-right-24: License](#)
+
+</div>
 <style>
 	
 	/* 英雄部分样式 */
@@ -73,72 +85,6 @@ title: 首页
 		color: white;
 	}
 
-	/* 功能块部分样式 */
-	.features {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		padding: 40px 20px;
-	}
-
-	.feature {
-		flex: 1 1 calc(50% - 40px);
-		max-width: calc(50% - 40px);
-		margin: 10px;
-		padding: 20px;
-		border: 1px solid #ddd;
-		border-radius: 8px;
-		text-align: center;
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-		transition: box-shadow 0.3s, transform 0.3s;
-		background: white;
-	}
-
-	.feature:hover {
-		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-		transform: translateY(-5px);
-	}
-
-	.feature h3 {
-		font-size: 1.5em;
-		margin-bottom: 10px;
-		color: #6200ee;
-	}
-
-	.feature p {
-		font-size: 1em;
-		color: #555;
-	}
-
-	.feature a {
-		display: block;
-		margin-top: 15px;
-		padding: 10px 15px;
-		color: white;
-		background: #6200ee;
-		text-decoration: none;
-		border-radius: 5px;
-		transition: background 0.3s;
-	}
-
-	.feature a:hover {
-		background: #3700b3;
-	}
-
-	/* 移动端优化 */
-	@media screen and (max-width: 768px) {
-		.feature {
-			flex: 1 1 calc(50% - 40px);
-			max-width: calc(50% - 40px);
-		}
-	}
-
-	@media screen and (max-width: 480px) {
-		.feature {
-			flex: 1 1 100%;
-			max-width: 100%;
-		}
-	}
 	.content__inner h1 {
 		display: none;
 	}
@@ -183,7 +129,7 @@ title: 首页
 				});
 		});
 	}
-
+	splitTextAndAnimate(); 
 	// 监听窗口大小变化，重新触发动画
 	window.addEventListener('load', function() {
 		splitTextAndAnimate(); // 页面resize后重新拆分并动画
